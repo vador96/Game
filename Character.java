@@ -3,14 +3,14 @@ package Model;
 
 public abstract class Character {
 
-    protected String name;
-    protected int health;
-    protected int maxHealth;
-    protected int mana;
-    protected int maxMana;
-    protected int posX;
-    protected int posY;
-    protected int invincible; // set 0 for invincible
+    String name;
+    private int health;
+    private int maxHealth;
+    private int mana;
+    private int maxMana;
+    private int posX;
+    private int posY;
+    protected boolean invincible;
 
     public int getHealth() {
         return this.health;
@@ -45,9 +45,25 @@ public abstract class Character {
     }
     public void setPosX(int x) {
         this.posX = x;
+        // condition ?
     }
     public void setPosY(int y) {
         this.posY = y;
+        // condition ?
+    }
+
+    public void getDamage(int damage) {
+        if (!this.invincible) {
+            int health = this.health;
+            health -= damage;
+            this.setHealth(health);
+        }
+    }
+
+    public void reloadMana(int speedMana) {
+        int mana = this.mana;
+        mana += speedMana;
+        this.setMana(mana);
     }
 
     public void move(int dx, int dy) {
@@ -55,3 +71,4 @@ public abstract class Character {
         this.posY = this.posY + dy;
     }
 }
+

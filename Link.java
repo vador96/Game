@@ -7,13 +7,14 @@ public class Link extends Character{
     private int speed;
 
     public Link(int hp, int x, int y, int speed, int defense, int attack, String name) {
-        this.health = hp;
-        this.posX = x;
-        this.posY = y;
+        this.setHealth(hp);
+        this.setPosX(x);
+        this.setPosY(y);
         this.speed = speed;
         this.defense = defense;
         this.attack = attack;
         this.name = name;
+        this.invincible = false;
     }
 
     public int getAttack() {
@@ -25,9 +26,5 @@ public class Link extends Character{
     public int getSpeed() {
         return this.speed;
     }
-
-
-
-
 
 }
