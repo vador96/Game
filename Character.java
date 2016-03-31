@@ -61,11 +61,6 @@ public abstract class Character {
         }
     }
 
-    public void reloadMana(int speedMana) {
-        int mana = this.mana;
-        mana += speedMana;
-        this.setMana(mana);
-    }
 
     public void move(int dx, int dy) {
         this.posX = this.posX + dx;
