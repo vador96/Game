@@ -10,6 +10,7 @@ public abstract class Character {
     private int maxMana;
     private int posX;
     private int posY;
+    private int direction;
     protected boolean invincible;
 
     public int getHealth() {
