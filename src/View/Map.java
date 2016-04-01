@@ -25,7 +25,7 @@ public class Map extends JPanel {
 					int y = j;
 					int color = mapMatrix[i][j];
 					
-					if(color == 0 || color == 2){
+					if(color == 0 || color == 2 || color == 3){
 						g.setColor(Color.GRAY);
 						g.fillRect(x*50, y*50, 48, 48); 
 						g.setColor(Color.BLACK);
@@ -42,6 +42,14 @@ public class Map extends JPanel {
 				int posY = player.getPosY();
 				String direction = player.getDirection();
 				Image img = Toolkit.getDefaultToolkit().getImage("res/LinkRun"+direction+"1.png");
+				g.drawImage(img, posX*50, posY*50, this);
+			}
+			
+			for(Monster monster : Game.getMonsters()){
+				int posX = monster.getPosX();
+				int posY = monster.getPosY();
+				String direction = monster.getDirection();
+				Image img = Toolkit.getDefaultToolkit().getImage("res/MeleeRun"+direction+"1.png");
 				g.drawImage(img, posX*50, posY*50, this);
 			}
 		}
