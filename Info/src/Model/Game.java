@@ -13,7 +13,7 @@ public class Game {
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private ArrayList<Tile> tiles = new ArrayList<Tile>();
 	private Window window;
-	private int size = 40;
+	private int size = 25;
 
 	public static Image tiledirt, tilegrassTop, tilegrassBot, tilegrassLeft, tilegrassRight;
 
@@ -62,23 +62,19 @@ public class Game {
 
 	public int[][] getMap() {
 		int[][] map = new int[this.size][this.size];
-		for (int i = 0; i < this.size; i++)
-			for (int j = 0; j < this.size; j++)
-				map[i][j] = 0;
 
 		for (Player player : players) {
 			int x = player.getPosX();
 			int y = player.getPosY();
 			map[x][y] = 5;
 		}
-		
+
 		for (Tile tile : tiles) {
 			int x = tile.getTileX();
 			int y = tile.getTileY();
 			int type = tile.getType();
 			map[x][y] = type;
 		}
-		System.out.println(map);
 		return map;
 	}
 

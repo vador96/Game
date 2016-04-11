@@ -48,8 +48,8 @@ public class Tile {
 	}
 
 	public Tile(int x, int y, int typeInt) {
-		tileX = x * 40;
-		tileY = y * 40;
+		tileX = x ;
+		tileY = y ;
 
 		type = typeInt;
 

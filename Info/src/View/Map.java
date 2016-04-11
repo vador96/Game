@@ -26,8 +26,6 @@ public class Map extends JPanel {
 					int y = j;
 					int type = mapMatrix[i][j];
 					Image tile = null;
-					
-					System.out.println(mapMatrix.length);
 
 					if (type == 2) {
 						tile = Game.tilegrassBot;

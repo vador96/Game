@@ -11,7 +11,7 @@ public class Window {
 	public Window() {
 		JFrame window = new JFrame("Game");
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setSize(1000, 1020);
+		window.setSize(975, 1000);
 		window.setLocationRelativeTo(null);
 		window.getContentPane().setBackground(Color.BLACK);
 		window.getContentPane().add(this.map);
