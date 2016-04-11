@@ -1,5 +1,7 @@
 package Model;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,9 +11,11 @@ import View.Window;
 
 public class Game {
 	private ArrayList<Player> players = new ArrayList<Player>();
-	private ArrayList<Block> blocks = new ArrayList<Block>();
+	private ArrayList<Tile> tiles = new ArrayList<Tile>();
 	private Window window;
-	private int size = 20;
+	private int size = 40;
+
+	public static Image tiledirt, tilegrassTop, tilegrassBot, tilegrassLeft, tilegrassRight;
 
 	public Game(Window window) {
 		this.window = window;
@@ -65,12 +69,14 @@ public class Game {
 		for (Player player : players) {
 			int x = player.getPosX();
 			int y = player.getPosY();
-			map[x][y] = 2;
+			map[x][y] = 5;
 		}
-		for (Block block : blocks) {
-			int x = block.getPosX();
-			int y = block.getPosY();
-			map[x][y] = 1;
+		
+		for (Tile tile : tiles) {
+			int x = tile.getTileX();
+			int y = tile.getTileY();
+			int type = tile.getType();
+			map[x][y] = type;
 		}
 		System.out.println(map);
 		return map;
@@ -80,6 +86,8 @@ public class Game {
 		ArrayList<String> lines = new ArrayList<String>();
 		int width = 0;
 		int height = 0;
+
+		loadMapImages();
 
 		BufferedReader reader = new BufferedReader(new FileReader(filename));
 		while (true) {
@@ -92,7 +100,6 @@ public class Game {
 			if (!line.startsWith("!")) {
 				lines.add(line);
 				width = Math.max(width, line.length());
-
 			}
 		}
 
@@ -103,12 +110,18 @@ public class Game {
 			for (int i = 0; i < width; i++) {
 				if (i < line.length()) {
 					char ch = line.charAt(i);
-					if (Character.getNumericValue(ch) == 1) {
-						Block b = new Block(i, j);
-						blocks.add(b);
-					}
+					Tile t = new Tile(i, j, Character.getNumericValue(ch));
+					tiles.add(t);
 				}
 			}
 		}
+	}
+
+	private void loadMapImages() {
+		tiledirt = Toolkit.getDefaultToolkit().getImage("src/data/tiledirt.png");
+		tilegrassTop = Toolkit.getDefaultToolkit().getImage("src/data/tilegrassTop.png");
+		tilegrassBot = Toolkit.getDefaultToolkit().getImage("src/data/tilegrassBot.png");
+		tilegrassLeft = Toolkit.getDefaultToolkit().getImage("src/data/tilegrassLeft.png");
+		tilegrassRight = Toolkit.getDefaultToolkit().getImage("src/data/tilegrassRight.png");
 	}
 }
