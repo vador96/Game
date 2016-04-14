@@ -11,29 +11,30 @@ public class Game implements Runnable {
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private ArrayList<Block> blocks = new ArrayList<Block>();
 	private ArrayList<Monster> monsters = new ArrayList<Monster>();
-    private Thread thread;
-    private int[][] map;
+	private Thread thread;
+	private int[][] map;
 	private Window window;
 	private int size = 20;
 
 	public Game(Window window) {
 		this.window = window;
 		players.add(new Player(100, 100));
-        this.map = this.getMap();
-		window.draw(this.map,players.get(0).getPosX(), players.get(0).getPosY());
-        thread = new Thread(this);
-        thread.start();
+		this.map = this.getMap();
+		window.draw(this.map, players.get(0).getPosX(), players.get(0).getPosY());
+		thread = new Thread(this);
+		thread.start();
 	}
 
 	public void run() {
 		while (true) {
-            try {
-                window.draw(this.map,players.get(0).getPosX(), players.get(0).getPosY());
-                Thread.sleep(17);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+			players.get(0).update();
+			window.draw(this.map, players.get(0).getPosX(), players.get(0).getPosY());
+			try {
+				Thread.sleep(17);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void movePlayerLeft() {
@@ -50,6 +51,10 @@ public class Game implements Runnable {
 
 	public void movePlayerUp() {
 		players.get(0).move(0, -1);
+	}
+
+	public void movePlayerStop() {
+		players.get(0).move(0, 0);
 	}
 
 	public int[][] getMap() {

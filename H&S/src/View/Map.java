@@ -2,11 +2,8 @@ package View;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 public class Map extends JPanel {
 	private static final long serialVersionUID = 1L;

@@ -40,5 +40,23 @@ public class Keyboard implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		int key = e.getKeyCode();
+
+		switch (key) {
+		case KeyEvent.VK_RIGHT:
+			game.movePlayerStop();
+			break;
+		case KeyEvent.VK_LEFT:
+			game.movePlayerStop();
+			break;
+		case KeyEvent.VK_DOWN:
+			game.movePlayerStop();
+			break;
+		case KeyEvent.VK_UP:
+			game.movePlayerStop();
+			break;
+		case KeyEvent.VK_SPACE:
+			break;
+		}
 	}
 }
