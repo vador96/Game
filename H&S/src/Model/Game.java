@@ -11,44 +11,45 @@ public class Game implements Runnable {
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private ArrayList<Block> blocks = new ArrayList<Block>();
 	private ArrayList<Monster> monsters = new ArrayList<Monster>();
+    private Thread thread;
+    private int[][] map;
 	private Window window;
 	private int size = 20;
 
 	public Game(Window window) {
 		this.window = window;
-
 		players.add(new Player(100, 100));
-
-		window.draw(this.getMap());
-		window.drawPlayer(players.get(0).getPosX(), players.get(0).getPosY());
+        this.map = this.getMap();
+		window.draw(this.map,players.get(0).getPosX(), players.get(0).getPosY());
+        thread = new Thread(this);
+        thread.start();
 	}
 
 	public void run() {
-
+		while (true) {
+            try {
+                window.draw(this.map,players.get(0).getPosX(), players.get(0).getPosY());
+                Thread.sleep(17);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 	}
 
 	public void movePlayerLeft() {
 		players.get(0).move(-1, 0);
-		window.draw(this.getMap());
-		window.drawPlayer(players.get(0).getPosX(), players.get(0).getPosY());
 	}
 
 	public void movePlayerRight() {
 		players.get(0).move(1, 0);
-		window.draw(this.getMap());
-		window.drawPlayer(players.get(0).getPosX(), players.get(0).getPosY());
 	}
 
 	public void movePlayerDown() {
 		players.get(0).move(0, 1);
-		window.draw(this.getMap());
-		window.drawPlayer(players.get(0).getPosX(), players.get(0).getPosY());
 	}
 
 	public void movePlayerUp() {
 		players.get(0).move(0, -1);
-		window.draw(this.getMap());
-		window.drawPlayer(players.get(0).getPosX(), players.get(0).getPosY());
 	}
 
 	public int[][] getMap() {

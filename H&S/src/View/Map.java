@@ -18,14 +18,14 @@ public class Map extends JPanel {
 		this.setFocusable(true);
 		this.requestFocusInWindow();
 
-		Timer timer = new Timer(10, new ActionListener() {
+		/*Timer timer = new Timer(10, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				repaint();
 			}
 		});
-		timer.start();
+		timer.start();*/
 	}
 
 	public void paint(Graphics g) {
@@ -59,12 +59,17 @@ public class Map extends JPanel {
 		}
 	}
 
-	public void setMapMatrix(int[][] mapMatrix) {
+	private void setMapMatrix(int[][] mapMatrix) {
 		this.mapMatrix = mapMatrix;
 	}
 
-	public void setPlayerPos(int x, int y) {
+	private void setPlayerPos(int x, int y) {
 		this.playerPosX = x;
 		this.playerPosY = y;
 	}
+    public void refresh(int[][] mapMatrix, int x, int y) {
+        this.setMapMatrix(mapMatrix);
+        this.setPlayerPos(x,y);
+        repaint();
+    }
 }

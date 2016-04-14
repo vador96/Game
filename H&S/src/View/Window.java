@@ -18,12 +18,8 @@ public class Window {
 		window.setVisible(true);
 	}
 
-	public void draw(int[][] mapMatrix) {
-		map.setMapMatrix(mapMatrix);
-	}
-
-	public void drawPlayer(int x, int y) {
-		map.setPlayerPos(x, y);
+	public void draw(int[][] mapMatrix, int playerX, int playerY) {
+		map.refresh(mapMatrix, playerX, playerY);
 	}
 
 	public void setKeyListener(KeyListener keyboard) {
