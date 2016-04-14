@@ -3,6 +3,7 @@ package Model;
 public class Player {
 	private int posX;
 	private int posY;
+	private int speed = 15;
 
 	public Player(int X, int Y) {
 		this.posX = X;
@@ -18,7 +19,7 @@ public class Player {
 	}
 
 	public void move(int X, int Y) {
-		this.posX = this.posX + X;
-		this.posY = this.posY + Y;
+		this.posX += X * speed;
+		this.posY += Y * speed;
 	}
 }

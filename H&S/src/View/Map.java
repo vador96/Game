@@ -11,12 +11,14 @@ import javax.swing.Timer;
 public class Map extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private int[][] mapMatrix;
+	private int playerPosX;
+	private int playerPosY;
 
 	public Map() {
 		this.setFocusable(true);
 		this.requestFocusInWindow();
 
-		Timer timer = new Timer(30, new ActionListener() {
+		Timer timer = new Timer(10, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -41,19 +43,17 @@ public class Map extends JPanel {
 					} else if (color == 1) {
 						g.setColor(Color.DARK_GRAY);
 						g.fillRect(x * 50, y * 50, 50, 50);
-					} else if (color == 2) {
-						g.setColor(Color.GRAY);
-						g.fillRect(x * 50, y * 50, 50, 50);
-						g.setColor(Color.cyan);
-						g.fillOval(x * 50, y * 50, 50, 50);
-						g.setColor(Color.BLACK);
-						g.drawOval(x * 50, y * 50, 50, 50);
 					} else if (color == 3) {
 						g.setColor(Color.RED);
 						g.fillRect(x * 50, y * 50, 50, 50);
 						g.setColor(Color.BLACK);
 						g.drawRect(x * 50, y * 50, 50, 50);
 					}
+
+					g.setColor(Color.cyan);
+					g.fillOval(playerPosX, playerPosY, 70, 70);
+					g.setColor(Color.BLACK);
+					g.drawOval(playerPosX, playerPosY, 70, 70);
 				}
 			}
 		}
@@ -61,5 +61,10 @@ public class Map extends JPanel {
 
 	public void setMapMatrix(int[][] mapMatrix) {
 		this.mapMatrix = mapMatrix;
+	}
+
+	public void setPlayerPos(int x, int y) {
+		this.playerPosX = x;
+		this.playerPosY = y;
 	}
 }

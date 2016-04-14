@@ -22,6 +22,10 @@ public class Window {
 		map.setMapMatrix(mapMatrix);
 	}
 
+	public void drawPlayer(int x, int y) {
+		map.setPlayerPos(x, y);
+	}
+
 	public void setKeyListener(KeyListener keyboard) {
 		this.map.addKeyListener(keyboard);
 	}

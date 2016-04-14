@@ -17,12 +17,12 @@ public class Game implements Runnable {
 	public Game(Window window) {
 		this.window = window;
 
-		players.add(new Player(10, 10));
+		players.add(new Player(100, 100));
 
 		window.draw(this.getMap());
+		window.drawPlayer(players.get(0).getPosX(), players.get(0).getPosY());
 	}
 
-	
 	public void run() {
 
 	}
@@ -30,21 +30,25 @@ public class Game implements Runnable {
 	public void movePlayerLeft() {
 		players.get(0).move(-1, 0);
 		window.draw(this.getMap());
+		window.drawPlayer(players.get(0).getPosX(), players.get(0).getPosY());
 	}
 
 	public void movePlayerRight() {
 		players.get(0).move(1, 0);
 		window.draw(this.getMap());
+		window.drawPlayer(players.get(0).getPosX(), players.get(0).getPosY());
 	}
 
 	public void movePlayerDown() {
 		players.get(0).move(0, 1);
 		window.draw(this.getMap());
+		window.drawPlayer(players.get(0).getPosX(), players.get(0).getPosY());
 	}
 
 	public void movePlayerUp() {
 		players.get(0).move(0, -1);
 		window.draw(this.getMap());
+		window.drawPlayer(players.get(0).getPosX(), players.get(0).getPosY());
 	}
 
 	public int[][] getMap() {
@@ -71,12 +75,6 @@ public class Game implements Runnable {
 			map[x][y] = 3;
 		}
 
-		for (Player player : players) {
-			int x = player.getPosX();
-			int y = player.getPosY();
-			map[x][y] = 2;
-		}
-		
 		return map;
 	}
 
