@@ -1,5 +1,6 @@
 package Model;
 
+import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -27,6 +28,9 @@ public class Game implements Runnable {
 
 	public void run() {
 		while (true) {
+			for (Monster monster : monsters) {
+				checkCollision(monster.getHitBox());
+			}
 			players.get(0).update();
 			window.draw(this.map, players.get(0).getPosX(), players.get(0).getPosY());
 			try {
@@ -119,6 +123,12 @@ public class Game implements Runnable {
 					}
 				}
 			}
+		}
+	}
+
+	public void checkCollision(Rectangle r) {
+		if (players.get(0).getHitBox().intersects(r)) {
+			players.get(0).move(0, 0);
 		}
 	}
 }

@@ -1,19 +1,42 @@
 package Model;
 
+import java.awt.Rectangle;
+
 public class Monster {
 	private int posX;
 	private int posY;
-	
-	public Monster(int X, int Y){
+
+	private Rectangle hitBox;
+
+	public Monster(int X, int Y) {
 		this.posX = X;
 		this.posY = Y;
+
+		this.hitBox = new Rectangle(X, Y, 50, 50);
+		hitBox.setBounds(X*50, Y*50, 50, 50);
 	}
-	
-	public int getPosX(){
+
+	public int getPosX() {
 		return this.posX;
 	}
-	
-	public int getPosY(){
+
+	public int getPosY() {
 		return this.posY;
+	}
+
+	public Rectangle getHitBox() {
+		return hitBox;
+	}
+
+	public void setHitBox(Rectangle hitBox) {
+		this.hitBox = hitBox;
+	}
+
+	public void setPosX(int posX) {
+		this.posX = posX;
+	}
+
+	public void setPosY(int posY) {
+		this.posY = posY;
 	}
 }
