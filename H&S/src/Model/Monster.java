@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 public class Monster {
 	private int posX;
 	private int posY;
+    private int health = 100;
 
 	private Rectangle hitBox;
 
@@ -28,6 +29,12 @@ public class Monster {
 		return hitBox;
 	}
 
+    public int getHealth() { return health;}
+
+    public void setHealth(int hp) {
+        this.health = hp;
+    }
+
 	public void setHitBox(Rectangle hitBox) {
 		this.hitBox = hitBox;
 	}
@@ -38,5 +45,9 @@ public class Monster {
 
 	public void setPosY(int posY) {
 		this.posY = posY;
+	}
+
+	public void damage(int damage) {
+		this.setHealth(this.health - damage);
 	}
 }

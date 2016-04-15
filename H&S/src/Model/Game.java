@@ -12,6 +12,7 @@ public class Game implements Runnable {
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private ArrayList<Block> blocks = new ArrayList<Block>();
 	private ArrayList<Monster> monsters = new ArrayList<Monster>();
+    private boolean playerAttacking = false;
 	private Thread thread;
 	private int[][] map;
 	private Window window;
@@ -31,7 +32,20 @@ public class Game implements Runnable {
 			for (Monster monster : monsters) {
 				checkCollision(monster.getHitBox());
 			}
+            if (isPlayerAttacking()) {
+                for (int i = 0; i<monsters.size();i++) {
+                    checkAttack(monsters.get(i));
+                    if (monsters.get(i).getHealth() <= 0) {
+                        monsters.remove(i);
+                    }
+                }
+            }
 			players.get(0).update();
+            if (players.get(0).getHealth() <= 0) {
+                System.out.println("dead");
+                //players.remove(0);
+                break;
+            }
 			window.draw(this.map, players.get(0).getPosX(), players.get(0).getPosY());
 			try {
 				Thread.sleep(17);
@@ -128,7 +142,24 @@ public class Game implements Runnable {
 
 	public void checkCollision(Rectangle r) {
 		if (players.get(0).getHitBox().intersects(r)) {
-			players.get(0).move(0, 0);
+			players.get(0).move(-1, 0);
+			players.get(0).isCollision = true;
 		}
 	}
+
+    public void checkAttack(Monster monster) {
+        Rectangle r = monster.getHitBox();
+        if (players.get(0).attackBox.intersects(r)) {
+            monster.damage(10);
+        }
+    }
+
+    public boolean isPlayerAttacking() {
+        return this.playerAttacking;
+    }
+
+    public void setPlayerAttacking(boolean attacking) {
+        this.playerAttacking = attacking;
+    }
+
 }

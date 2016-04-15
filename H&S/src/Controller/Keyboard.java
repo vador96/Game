@@ -30,6 +30,7 @@ public class Keyboard implements KeyListener {
 			game.movePlayerUp();
 			break;
 		case KeyEvent.VK_SPACE:
+			game.setPlayerAttacking(true);
 			break;
 		}
 	}
@@ -56,6 +57,7 @@ public class Keyboard implements KeyListener {
 			game.movePlayerStop();
 			break;
 		case KeyEvent.VK_SPACE:
+            game.setPlayerAttacking(false);
 			break;
 		}
 	}
