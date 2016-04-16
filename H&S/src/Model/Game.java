@@ -35,8 +35,13 @@ public class Game implements Runnable {
             if (isPlayerAttacking()) {
                 for (int i = 0; i<monsters.size();i++) {
                     checkAttack(monsters.get(i));
+                    System.out.println(monsters.get(i).getHealth());
                     if (monsters.get(i).getHealth() <= 0) {
+                        int posX = monsters.get(i).getPosX();
+                        int posY = monsters.get(i).getPosY();
+                        map[posX][posY] = '1';
                         monsters.remove(i);
+                        System.out.println("dead monster");
                     }
                 }
             }
@@ -151,6 +156,7 @@ public class Game implements Runnable {
         Rectangle r = monster.getHitBox();
         if (players.get(0).attackBox.intersects(r)) {
             monster.damage(10);
+            System.out.println(monster.getHealth());
         }
     }
 
