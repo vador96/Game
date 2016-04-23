@@ -2,7 +2,7 @@ package Model;
 
 import java.awt.*;
 
-public abstract class Character implements Collidable{
+public abstract class Character implements Collidable {
 
     protected int posX;
     protected int posY;
@@ -68,4 +68,5 @@ public abstract class Character implements Collidable{
         this.speedX = dx;
         this.speedY = dy;
     }
+
 }

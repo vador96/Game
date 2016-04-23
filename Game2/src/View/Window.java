@@ -3,10 +3,11 @@ package View;
 import javax.swing.*;
 import java.awt.event.KeyListener;
 import Model.Monster;
+import Model.Observer;
 import Model.Player;
 import java.util.ArrayList;
 
-public class Window extends JFrame {
+public class Window extends JFrame implements Observer{
     private Map map = new Map();
 
     public Window() {
@@ -23,5 +24,10 @@ public class Window extends JFrame {
 
     public void setKeyListener(KeyListener controller) {
         this.map.addKeyListener(controller);
+    }
+
+    @Override
+    public void update() {
+
     }
 }

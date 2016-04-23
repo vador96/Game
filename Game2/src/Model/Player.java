@@ -9,6 +9,7 @@ public class Player extends Character {
     public Player(int x, int y, int hp) {
         this.setPosX(x);
         this.setPosY(y);
+        this.setSpeed(10);
         this.hitBox = new Rectangle(this.posX, this.posY, 50, 50);
         this.setHealth(hp);
 
@@ -55,7 +56,7 @@ public class Player extends Character {
     }
 
     public void update() {
-        move(speedX,speedY);
+        //move(speedX,speedY);
         setHitBox(this.posX, this.posY);
         moveDown = true;
         moveLeft = true;

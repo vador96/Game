@@ -49,7 +49,7 @@ public class Controller implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        int key = e.getKeyCode();
+        /*int key = e.getKeyCode();
 
         switch (key) {
             case KeyEvent.VK_RIGHT:
@@ -66,6 +66,6 @@ public class Controller implements KeyListener {
                 break;
             case KeyEvent.VK_SPACE:
                 break;
-        }
+        }*/
     }
 }

@@ -4,7 +4,7 @@ import View.Window;
 
 import java.util.ArrayList;
 
-public class Game implements Runnable {
+public class Game implements Runnable, Subject {
 
     private Window window;
     private Thread thread;
@@ -89,4 +89,11 @@ public class Game implements Runnable {
             monster.lookForPlayer(players.get(0));
         }
     }
+
+    @Override
+    public void notifyObserver(Observer observer) {
+
+    }
+
+
 }
