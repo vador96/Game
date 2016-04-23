@@ -10,7 +10,9 @@ import java.util.ArrayList;
 
 public class Map extends JPanel{
 
-    private char[][] mapMatrix;
+	private static final long serialVersionUID = 1L;
+	
+	private char[][] mapMatrix;
     private ArrayList<Player> players;
     private ArrayList<Monster> monsters;
 

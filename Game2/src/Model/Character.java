@@ -2,13 +2,16 @@ package Model;
 
 import java.awt.*;
 
-public abstract class Character implements Collidable {
+public abstract class Character implements Collidable{
 
     protected int posX;
     protected int posY;
     protected int speedX = 0; // vecteurs
     protected int speedY = 0; // directeurs
     protected int speed = 5;
+    
+    protected int dir;
+    
     private int health;
     private Rectangle hitBox;
 
@@ -68,5 +71,4 @@ public abstract class Character implements Collidable {
         this.speedX = dx;
         this.speedY = dy;
     }
-
 }

@@ -5,8 +5,7 @@ import java.awt.*;
 public interface Collidable {
 
     Rectangle getHitbox();
-    void setHitBox(int x, int y); // pas nécessaire
+    void setHitBox(int x, int y);
     boolean collides(Collidable collidable);
     void applyCollision(Collidable collidable);
-
 }

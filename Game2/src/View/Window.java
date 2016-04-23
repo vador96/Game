@@ -3,12 +3,14 @@ package View;
 import javax.swing.*;
 import java.awt.event.KeyListener;
 import Model.Monster;
-import Model.Observer;
 import Model.Player;
 import java.util.ArrayList;
 
-public class Window extends JFrame implements Observer{
-    private Map map = new Map();
+public class Window extends JFrame {
+	
+	private static final long serialVersionUID = 1L;
+	
+	private Map map = new Map();
 
     public Window() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,10 +26,5 @@ public class Window extends JFrame implements Observer{
 
     public void setKeyListener(KeyListener controller) {
         this.map.addKeyListener(controller);
-    }
-
-    @Override
-    public void update() {
-
     }
 }
