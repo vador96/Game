@@ -42,7 +42,13 @@ public class MeleeAttack implements Damage, Collidable {
 	}
 
 	@Override
-	public void applyCollision(Collidable collidable) {
+	public int collidesWith(Collidable collidable) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void applyCollision(Collidable collidable, int edge) {
 		// TODO Auto-generated method stub
 
 	}

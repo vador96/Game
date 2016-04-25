@@ -6,6 +6,10 @@ import java.util.Random;
 public class Monster extends Character {
 
 	private Rectangle hitBox;
+	private Rectangle rtop;
+	private Rectangle rbot;
+	private Rectangle rleft;
+	private Rectangle rright;
 	private Rectangle fieldOfView;
 	private int vision = 100;
 	protected Random random;
@@ -15,6 +19,10 @@ public class Monster extends Character {
 		this.setPosY(y);
 		this.setSpeed(2);
 		this.hitBox = new Rectangle(posX, posY, 50, 50);
+		this.rtop = new Rectangle(this.posX + 20, this.posY, 10, 10);
+		this.rbot = new Rectangle(this.posX + 20, this.posY + 40, 10, 10);
+		this.rleft = new Rectangle(this.posX, this.posY + 20, 10, 10);
+		this.rright = new Rectangle(this.posX + 40, this.posY + 20, 10, 10);
 		this.fieldOfView = new Rectangle(posX - vision, posY - vision, 3 * vision, 3 * vision);
 		this.setHealth(hp);
 		random = new Random();
@@ -27,7 +35,7 @@ public class Monster extends Character {
 
 	@Override
 	public void setHitBox(int x, int y) {
-		this.hitBox.setRect(x, y, 50, 50);
+		this.hitBox.setBounds(x, y, 50, 50);
 	}
 
 	public Rectangle getFieldOfView() {
@@ -50,12 +58,43 @@ public class Monster extends Character {
 		return collision;
 	}
 
+	public int collidesWith(Collidable collidable) {
+		int edge = 0;
+		Rectangle box = collidable.getHitbox();
+		if (this.rbot.intersects(box)) {
+			edge = 2;
+		} else if (this.rtop.intersects(box)) {
+			edge = 8;
+		} else if (this.rleft.intersects(box)) {
+			edge = 4;
+		} else if (this.rright.intersects(box)) {
+			edge = 6;
+		}
+		return edge;
+	}
+
 	@Override
-	public void applyCollision(Collidable collidable) {
+	public void applyCollision(Collidable collidable, int edge) {
+		int xTarget = (int) collidable.getHitbox().getX();
+		int yTarget = (int) collidable.getHitbox().getY();
+
+		if (edge == 6) {
+			posX = xTarget - 50;
+		} else if (edge == 4) {
+			posX = xTarget + 50;
+		} else if (edge == 2) {
+			posY = yTarget - 50;
+		} else if (edge == 8) {
+			posY = yTarget + 50;
+		}
 	}
 
 	public void update() {
 		setHitBox(this.posX, this.posY);
+		rtop.setRect(this.posX + 20, this.posY, 10, 10);
+		rbot.setRect(this.posX + 20, this.posY + 40, 10, 10);
+		rleft.setRect(this.posX, this.posY + 20, 10, 10);
+		rright.setRect(this.posX + 40, this.posY + 20, 10, 10);
 		setFieldOfView(this.posX, this.posY);
 	}
 

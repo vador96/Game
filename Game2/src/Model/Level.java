@@ -43,6 +43,5 @@ public class Level {
             }
         }
         return mapMatrix;
-
     }
 }
