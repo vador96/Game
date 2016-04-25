@@ -2,73 +2,77 @@ package Model;
 
 import java.awt.*;
 
-public abstract class Character implements Collidable{
+public abstract class Character implements Collidable {
 
-    protected int posX;
-    protected int posY;
-    protected int speedX = 0; // vecteurs
-    protected int speedY = 0; // directeurs
-    protected int speed = 5;
-    
-    protected int dir;
-    
-    private int health;
-    private Rectangle hitBox;
+	protected int posX;
+	protected int posY;
+	protected int speedX = 0; // vecteurs
+	protected int speedY = 0; // directeurs
+	protected int speed = 5;
 
-    protected boolean moveLeft = true;
-    protected boolean moveRight = true;
-    protected boolean moveUp = true;
-    protected boolean moveDown = true;
+	protected int dir;
 
-    public int getPosX() {
-        return posX;
-    }
+	private int health;
+	private Rectangle hitBox;
 
-    public void setPosX(int posX) {
-        this.posX = posX*50; //  *50 : en reference a la taille de la map
-    }
+	protected boolean moveLeft = true;
+	protected boolean moveRight = true;
+	protected boolean moveUp = true;
+	protected boolean moveDown = true;
 
-    public int getPosY() {
-        return posY;
-    }
+	public int getPosX() {
+		return posX;
+	}
 
-    public void setPosY(int posY) {
-        this.posY = posY*50;
-    }
+	public void setPosX(int posX) {
+		this.posX = posX * 50; // *50 : en reference a la taille de la map
+	}
 
-    public int getSpeed() {
-        return speed;
-    }
+	public int getPosY() {
+		return posY;
+	}
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
+	public void setPosY(int posY) {
+		this.posY = posY * 50;
+	}
 
-    public int getHealth() {
-        return health;
-    }
+	public int getSpeed() {
+		return speed;
+	}
 
-    public void setHealth(int health) {
-        if (health >= 100) {
-            this.health = 100;
-        } else if (health <= 0) {
-            this.health = 0;
-        } else {
-            this.health = health;
-        }
-    }
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
 
-    public void move(int dx, int dy) {
-        if (dx < 0 && moveLeft) {
-            this.posX = posX + speed * dx;
-        } else if (dx > 0 && moveRight) {
-            this.posX = posX + speed * dx;
-        } else if (dy < 0 && moveUp) {
-            this.posY = posY + speed * dy;
-        } else if (dy > 0 && moveDown) {
-            this.posY = posY + speed * dy;
-        }
-        this.speedX = dx;
-        this.speedY = dy;
-    }
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		if (health >= 100) {
+			this.health = 100;
+		} else if (health <= 0) {
+			this.health = 0;
+		} else {
+			this.health = health;
+		}
+	}
+
+	public void move(int dx, int dy) {
+		if (dx < 0 && moveLeft) {
+			this.posX = posX + speed * dx;
+			dir = 0;
+		} else if (dx > 0 && moveRight) {
+			this.posX = posX + speed * dx;
+			dir = 2;
+		} else if (dy < 0 && moveUp) {
+			this.posY = posY + speed * dy;
+			dir = 1;
+		} else if (dy > 0 && moveDown) {
+			this.posY = posY + speed * dy;
+			dir = 3;
+		}
+		this.speedX = dx;
+		this.speedY = dy;
+	}
 }

@@ -88,6 +88,10 @@ public class Game implements Runnable {
 		players.get(0).move(0, 1);
 	}
 
+	public void playerAttack() {
+		// players.get(0).attack();
+	}
+
 	public void stopPlayer() {
 		players.get(0).move(0, 0);
 	}

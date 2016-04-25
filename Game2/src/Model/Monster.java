@@ -8,6 +8,7 @@ public class Monster extends Character {
 	private Rectangle hitBox;
 	private Rectangle fieldOfView;
 	private int vision = 100;
+	protected Random random;
 
 	public Monster(int x, int y, int hp) {
 		this.setPosX(x);
@@ -16,6 +17,7 @@ public class Monster extends Character {
 		this.hitBox = new Rectangle(posX, posY, 50, 50);
 		this.fieldOfView = new Rectangle(posX - vision, posY - vision, 3 * vision, 3 * vision);
 		this.setHealth(hp);
+		random = new Random();
 	}
 
 	@Override
@@ -50,24 +52,6 @@ public class Monster extends Character {
 
 	@Override
 	public void applyCollision(Collidable collidable) {
-
-		if (speedX < 0) {
-			moveLeft = false;
-			move(0, 0);
-			posX = (int) collidable.getHitbox().getX() + 50;
-		} else if (speedX > 0) {
-			moveRight = false;
-			move(0, 0);
-			posX = (int) collidable.getHitbox().getX() - 50;
-		} else if (speedY < 0) {
-			moveUp = false;
-			move(0, 0);
-			posY = (int) collidable.getHitbox().getY() + 50;
-		} else if (speedY > 0) {
-			moveDown = false;
-			move(0, 0);
-			posY = (int) collidable.getHitbox().getY() - 50;
-		}
 	}
 
 	public void update() {
@@ -103,18 +87,17 @@ public class Monster extends Character {
 	}
 
 	private void patrol() {
-		Random random = new Random();
 		if (random.nextInt(10) == 7) {
-			dir = random.nextInt(5);
+			dir = random.nextInt(4);
 		}
 
-		if (dir == 0) {
+		if (dir == 2) {
 			move(1, 0);
-		} else if (dir == 1) {
+		} else if (dir == 0) {
 			move(-1, 0);
-		} else if (dir == 2) {
-			move(0, 1);
 		} else if (dir == 3) {
+			move(0, 1);
+		} else if (dir == 1) {
 			move(0, -1);
 		} else if (dir == 4) {
 			move(0, 0);

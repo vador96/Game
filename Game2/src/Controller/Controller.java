@@ -37,6 +37,7 @@ public class Controller implements KeyListener {
                 game.movePlayerUp();
                 break;
             case KeyEvent.VK_SPACE:
+            	game.playerAttack();
                 break;
         }
     }
