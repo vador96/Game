@@ -66,14 +66,42 @@ public class Player extends Character {
 		int xTarget = (int) collidable.getHitbox().getX();
 		int yTarget = (int) collidable.getHitbox().getY();
 
-		if (edge == 6) {
-			posX = xTarget - 50;
-		} else if (edge == 4) {
-			posX = xTarget + 50;
-		} else if (edge == 2) {
-			posY = yTarget - 50;
-		} else if (edge == 8) {
-			posY = yTarget + 50;
+		if (collidable instanceof Block) {
+			if (edge == 6) {
+				posX = xTarget - 50;
+			} else if (edge == 4) {
+				posX = xTarget + 50;
+			} else if (edge == 2) {
+				posY = yTarget - 50;
+			} else if (edge == 8) {
+				posY = yTarget + 50;
+			}
+		} else if (collidable instanceof Monster /*
+													 * || collidable instanceof
+													 * PojectileOfMonster
+													 */) {
+			// Ce srait cool de coder des attaques à distance des monstres, ici
+			// c'est juste ajouter "collidable instanceof PojectileOfMonster" et
+			// les monstres ont les meme objets projectiles
+			// Pour l'instant j'ai fait collision sans répulsion mais quand le
+			// montre te colle tu perds de la vie
+			if (edge == 6) {
+				// doDamage
+				// move(-1, 0);
+				move(0, 0);
+			} else if (edge == 4) {
+				// doDamage
+				// move(1, 0);
+				move(0, 0);
+			} else if (edge == 2) {
+				// doDamage
+				// move(0, -1);
+				move(0, 0);
+			} else if (edge == 8) {
+				// doDamage
+				// move(0, 1);
+				move(0, 0);
+			}
 		}
 	}
 

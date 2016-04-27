@@ -17,7 +17,7 @@ public class Monster extends Character {
 	public Monster(int x, int y, int hp) {
 		this.setPosX(x);
 		this.setPosY(y);
-		this.setSpeed(2);
+		this.setSpeed(1);
 		this.hitBox = new Rectangle(posX, posY, 50, 50);
 		this.rtop = new Rectangle(this.posX + 20, this.posY, 10, 10);
 		this.rbot = new Rectangle(this.posX + 20, this.posY + 40, 10, 10);
@@ -77,7 +77,6 @@ public class Monster extends Character {
 	public void applyCollision(Collidable collidable, int edge) {
 		int xTarget = (int) collidable.getHitbox().getX();
 		int yTarget = (int) collidable.getHitbox().getY();
-
 		if (edge == 6) {
 			posX = xTarget - 50;
 		} else if (edge == 4) {
@@ -116,13 +115,12 @@ public class Monster extends Character {
 			dx = 1;
 		} else if (posY <= y) {
 			dy = 1;
-		} else if (posX > x + 50) {
+		} else if (posX > x + 20) {
 			dx = -1;
-		} else if (posY > y + 50) {
+		} else if (posY > y + 20) {
 			dy = -1;
 		}
 		move(dx, dy);
-
 	}
 
 	private void patrol() {

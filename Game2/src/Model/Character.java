@@ -8,7 +8,7 @@ public abstract class Character implements Collidable {
 	protected int posY;
 	protected int speedX = 0; // vecteurs
 	protected int speedY = 0; // directeurs
-	protected int speed = 5;
+	protected int speed = 3;
 
 	protected int dir;
 
