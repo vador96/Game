@@ -44,15 +44,18 @@ public class Block implements Collidable {
         return false;
     }
 
-	@Override
-	public void applyCollision(Collidable collidable, int edge) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public int collidesWith(Collidable collidable) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public int collidesWith(Collidable collidable) {
+        return 0;
+    }
+
+    @Override
+    public void applyCollision(Collidable collidable, int edge) {
+
+    }
+
+    @Override
+    public void getDamage(int damage) {
+    }
 }

@@ -1,6 +1,7 @@
 package Model;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Player extends Character {
 
@@ -10,9 +11,12 @@ public class Player extends Character {
 	private Rectangle rleft;
 	private Rectangle rright;
 
+	public int munitions = 15;
+
 	public Player(int x, int y, int hp) {
 		this.setPosX(x);
 		this.setPosY(y);
+		this.setSpeed(4);
 
 		this.hitBox = new Rectangle(this.posX, this.posY, 50, 50);
 		this.rtop = new Rectangle(this.posX + 20, this.posY, 10, 10);
@@ -66,44 +70,39 @@ public class Player extends Character {
 		int xTarget = (int) collidable.getHitbox().getX();
 		int yTarget = (int) collidable.getHitbox().getY();
 
-		if (collidable instanceof Block) {
-			if (edge == 6) {
-				posX = xTarget - 50;
-			} else if (edge == 4) {
-				posX = xTarget + 50;
-			} else if (edge == 2) {
-				posY = yTarget - 50;
-			} else if (edge == 8) {
-				posY = yTarget + 50;
-			}
-		} else if (collidable instanceof Monster /*
-													 * || collidable instanceof
-													 * PojectileOfMonster
-													 */) {
-			// Ce srait cool de coder des attaques à distance des monstres, ici
-			// c'est juste ajouter "collidable instanceof PojectileOfMonster" et
-			// les monstres ont les meme objets projectiles
-			// Pour l'instant j'ai fait collision sans répulsion mais quand le
-			// montre te colle tu perds de la vie
-			if (edge == 6) {
-				// doDamage
-				// move(-1, 0);
-				move(0, 0);
-			} else if (edge == 4) {
-				// doDamage
-				// move(1, 0);
-				move(0, 0);
-			} else if (edge == 2) {
-				// doDamage
-				// move(0, -1);
-				move(0, 0);
-			} else if (edge == 8) {
-				// doDamage
-				// move(0, 1);
-				move(0, 0);
-			}
+		if (edge == 6) {
+			posX = xTarget - 50;
+		} else if (edge == 4) {
+			posX = xTarget + 50;
+		} else if (edge == 2) {
+			posY = yTarget - 50;
+		} else if (edge == 8) {
+			posY = yTarget + 50;
 		}
 	}
+
+    @Override
+    public void getDamage(int damage) {
+        int hp = this.getHealth();
+        this.setHealth(hp - damage);
+    }
+
+    public boolean attack() {
+        boolean attack;
+        if (munitions != 0) {
+            munitions -= 1;
+            attack = true;
+        } else {
+            attack = false;
+        }
+        return attack;
+    }
+
+    public void reload() {
+        if (munitions == 0) {
+            munitions = 15;
+        }
+    }
 
 	public void update() {
 		moveDown = true;
@@ -116,6 +115,7 @@ public class Player extends Character {
 		rbot.setRect(this.posX + 20, this.posY + 40, 10, 10);
 		rleft.setRect(this.posX, this.posY + 20, 10, 10);
 		rright.setRect(this.posX + 40, this.posY + 20, 10, 10);
+        reload();
 	}
 
 	public Rectangle getHitBox() {

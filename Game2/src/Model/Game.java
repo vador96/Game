@@ -14,6 +14,7 @@ public class Game implements Runnable {
 	private ArrayList<Monster> monsters = new ArrayList<>();
 	private ArrayList<Block> blocks = new ArrayList<>();
 	private ArrayList<Collidable> collidables = new ArrayList<>();
+	private ArrayList<Projectile> projectiles = new ArrayList<>();
 
 	public Game(Window window, Level level) {
 		this.window = window;
@@ -21,7 +22,7 @@ public class Game implements Runnable {
 		this.map = level.mapMatrix;
 		players.add(new Player(1, 1, 100)); // pos < dimension matrice
 		this.generateCollidables();
-		this.window.draw(map, players, monsters);
+		this.window.draw(map, players, monsters, projectiles);
 		thread = new Thread(this);
 		thread.start();
 	}
@@ -32,8 +33,17 @@ public class Game implements Runnable {
 			try {
 				players.get(0).update();
 				moveMonsters();
+                moveProjectiles();
 				checkCollision();
-				window.draw(map, players, monsters);
+                for (Monster monster : monsters) {
+                    if (monster.dead) {
+                        monsters.remove(monster);
+                    }
+                }
+                if (players.get(0).dead) {
+                    players.remove(0);
+                }
+				window.draw(map, players, monsters, projectiles);
 				Thread.sleep(17);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -56,7 +66,6 @@ public class Game implements Runnable {
 				}
 			}
 		}
-		collidables.add(players.get(0));
 	}
 
 	public void checkCollision() {
@@ -66,11 +75,18 @@ public class Game implements Runnable {
 				players.get(0).applyCollision(collidables.get(j), edge);
 			}
 			for (int i = 0; i < monsters.size(); i++) {
-				if (collidables.get(j) != monsters.get(i) && monsters.get(i).collides(collidables.get(j))) {
+				if (collidables.get(j) != monsters.get(i) && monsters.get(i).collides(collidables.get(j)) && collidables.get(j) != players.get(0)) {
 					int edge = monsters.get(i).collidesWith(collidables.get(j));
 					monsters.get(i).applyCollision(collidables.get(j), edge);
 				}
 			}
+
+            for (int i = 0; i < projectiles.size(); i++) {
+                if (collidables.get(j) != projectiles.get(i) && projectiles.get(i).collides(collidables.get(j)) && collidables.get(j) != players.get(0)) {
+                    projectiles.get(i).applyCollision(collidables.get(j), 0);
+                    projectiles.remove(i);
+                }
+            }
 		}
 	}
 
@@ -91,7 +107,13 @@ public class Game implements Runnable {
 	}
 
 	public void playerAttack() {
-		// players.get(0).attack();
+        boolean attack = players.get(0).attack();
+        int x = players.get(0).getPosX();
+        int y = players.get(0).getPosY();
+        int dir = players.get(0).direction;
+        if (attack) {
+            projectiles.add(new Projectile(x, y, dir, 5, 10));
+        }
 	}
 
 	public void stopPlayer() {
@@ -104,4 +126,10 @@ public class Game implements Runnable {
 			monster.lookForPlayer(players.get(0));
 		}
 	}
+
+    public void moveProjectiles() {
+        for (Projectile projectile : projectiles) {
+            projectile.update();
+        }
+    }
 }

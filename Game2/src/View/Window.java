@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.event.KeyListener;
 import Model.Monster;
 import Model.Player;
+import Model.Projectile;
+
 import java.util.ArrayList;
 
 public class Window extends JFrame {
@@ -20,8 +22,8 @@ public class Window extends JFrame {
         this.setVisible(true);
     }
 
-    public void draw(char[][] mapMatrix, ArrayList<Player> players, ArrayList<Monster> monsters) {
-        map.refresh(mapMatrix, players, monsters);
+    public void draw(char[][] mapMatrix, ArrayList<Player> players, ArrayList<Monster> monsters, ArrayList<Projectile> projectiles) {
+        map.refresh(mapMatrix, players, monsters, projectiles);
     }
 
     public void setKeyListener(KeyListener controller) {

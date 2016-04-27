@@ -8,10 +8,10 @@ public abstract class Character implements Collidable {
 	protected int posY;
 	protected int speedX = 0; // vecteurs
 	protected int speedY = 0; // directeurs
-	protected int speed = 3;
+	protected int speed = 5;
 
-	protected int dir;
-
+	public int direction;
+    public boolean dead = false;
 	private int health;
 	private Rectangle hitBox;
 
@@ -53,6 +53,7 @@ public abstract class Character implements Collidable {
 			this.health = 100;
 		} else if (health <= 0) {
 			this.health = 0;
+            this.dead = true;
 		} else {
 			this.health = health;
 		}
@@ -61,18 +62,20 @@ public abstract class Character implements Collidable {
 	public void move(int dx, int dy) {
 		if (dx < 0 && moveLeft) {
 			this.posX = posX + speed * dx;
-			dir = 0;
+			direction = 0;
 		} else if (dx > 0 && moveRight) {
 			this.posX = posX + speed * dx;
-			dir = 2;
+			direction = 2;
 		} else if (dy < 0 && moveUp) {
 			this.posY = posY + speed * dy;
-			dir = 1;
+			direction = 1;
 		} else if (dy > 0 && moveDown) {
 			this.posY = posY + speed * dy;
-			dir = 3;
+			direction = 3;
 		}
 		this.speedX = dx;
 		this.speedY = dy;
 	}
+
+
 }

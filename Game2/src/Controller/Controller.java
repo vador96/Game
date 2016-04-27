@@ -38,6 +38,7 @@ public class Controller implements KeyListener {
                 break;
             case KeyEvent.VK_SPACE:
             	game.playerAttack();
+                System.out.println("hit");
                 break;
         }
     }

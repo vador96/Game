@@ -74,9 +74,16 @@ public class Monster extends Character {
 	}
 
 	@Override
+	public void getDamage(int damage) {
+		int hp = this.getHealth();
+		this.setHealth(hp - damage);
+	}
+
+	@Override
 	public void applyCollision(Collidable collidable, int edge) {
 		int xTarget = (int) collidable.getHitbox().getX();
 		int yTarget = (int) collidable.getHitbox().getY();
+
 		if (edge == 6) {
 			posX = xTarget - 50;
 		} else if (edge == 4) {
@@ -115,28 +122,29 @@ public class Monster extends Character {
 			dx = 1;
 		} else if (posY <= y) {
 			dy = 1;
-		} else if (posX > x + 20) {
+		} else if (posX > x + 50) {
 			dx = -1;
-		} else if (posY > y + 20) {
+		} else if (posY > y + 50) {
 			dy = -1;
 		}
 		move(dx, dy);
+
 	}
 
 	private void patrol() {
 		if (random.nextInt(10) == 7) {
-			dir = random.nextInt(4);
+			direction = random.nextInt(4);
 		}
 
-		if (dir == 2) {
+		if (direction == 2) {
 			move(1, 0);
-		} else if (dir == 0) {
+		} else if (direction == 0) {
 			move(-1, 0);
-		} else if (dir == 3) {
+		} else if (direction == 3) {
 			move(0, 1);
-		} else if (dir == 1) {
+		} else if (direction == 1) {
 			move(0, -1);
-		} else if (dir == 4) {
+		} else if (direction == 4) {
 			move(0, 0);
 		}
 	}
