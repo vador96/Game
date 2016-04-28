@@ -13,4 +13,6 @@ public interface Collidable {
 	void applyCollision(Collidable collidable, int edge);
 
 	int collidesWith(Collidable collidable);
+
+	void getDamage(int damage);
 }

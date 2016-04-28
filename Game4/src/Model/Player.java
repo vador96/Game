@@ -10,9 +10,13 @@ public class Player extends Character {
 	private Rectangle rleft;
 	private Rectangle rright;
 
-	public Player(int x, int y, int hp) {
+    private Thread thread;
+    private Game game;
+
+	public Player(int x, int y, int hp, Game game) {
 		this.setPosX(x);
 		this.setPosY(y);
+        this.setSpeed(4);
 
 		this.hitBox = new Rectangle(this.posX, this.posY, 50, 50);
 		this.rtop = new Rectangle(this.posX + 10, this.posY, 20, 10);
@@ -21,6 +25,9 @@ public class Player extends Character {
 		this.rright = new Rectangle(this.posX + 30, this.posY + 10, 10, 20);
 
 		this.setHealth(hp);
+        this.game = game;
+        this.thread = new Thread(this);
+        this.thread.start();
 	}
 
 	@Override
@@ -30,7 +37,7 @@ public class Player extends Character {
 
 	@Override
 	public void setHitBox(int x, int y) {
-		this.hitBox.setBounds(x, y, sizeSquarre, sizeSquarre);
+		this.hitBox.setBounds(x, y, sizeSquare, sizeSquare);
 	}
 
 	@Override
@@ -62,38 +69,50 @@ public class Player extends Character {
 	}
 
 	@Override
+	public void getDamage(int damage) {
+		int hp = this.getHealth();
+		this.setHealth(hp - damage);
+	}
+
+    public void attack() {
+        game.projectiles.add(new Projectile(posX + sizeSquare, posY + sizeSquare/2, dir, speed, 10));
+        // le dernier argument, damage, pourrait Ã©ventuellement Ãªtre fonction des skills et du stuff de Link
+        // + ajouter un timer pour pas tirer comme un bourrin
+    }
+
+	@Override
 	public void applyCollision(Collidable collidable, int edge) {
 		int xTarget = (int) collidable.getHitbox().getX();
 		int yTarget = (int) collidable.getHitbox().getY();
 
 		if (collidable instanceof Block) {
 			if (edge == 6) {
-				posX = xTarget - (sizeSquarre - 1);
+				posX = xTarget - (sizeSquare - 1);
 			} else if (edge == 4) {
-				posX = xTarget + (sizeSquarre - 1);
+				posX = xTarget + (sizeSquare - 1);
 			} else if (edge == 2) {
-				posY = yTarget - (sizeSquarre - 1);
+				posY = yTarget - (sizeSquare - 1);
 			} else if (edge == 8) {
-				posY = yTarget + (sizeSquarre - 1);
+				posY = yTarget + (sizeSquare - 1);
 			}
-		} else if (collidable instanceof Monster /*
+		} else if (collidable instanceof Monster) { /*
 													 * || collidable instanceof
 													 * PojectileOfMonster
-													 */) {
-			// Ce srait cool de coder des attaques à distance des monstres, ici
+													 */
+			// Ce srait cool de coder des attaques ï¿½ distance des monstres, ici
 			// c'est juste ajouter "collidable instanceof PojectileOfMonster" et
 			// les monstres ont les meme objets projectiles
-			// Pour l'instant j'ai fait collision sans répulsion mais quand le
+			// Pour l'instant j'ai fait collision sans rï¿½pulsion mais quand le
 			// montre te colle tu perds de la vie
 
 			if (edge == 6) {
-				posX = xTarget - (sizeSquarre - 1);
+				posX = xTarget - (sizeSquare - 1);
 			} else if (edge == 4) {
-				posX = xTarget + (sizeSquarre - 1);
+				posX = xTarget + (sizeSquare - 1);
 			} else if (edge == 2) {
-				posY = yTarget - (sizeSquarre - 1);
+				posY = yTarget - (sizeSquare - 1);
 			} else if (edge == 8) {
-				posY = yTarget + (sizeSquarre - 1);
+				posY = yTarget + (sizeSquare - 1);
 			}
 		}
 	}
@@ -105,6 +124,7 @@ public class Player extends Character {
 		rbot.setBounds(this.posX + 10, this.posY + 30, 20, 10);
 		rleft.setBounds(this.posX, this.posY + 10, 10, 20);
 		rright.setBounds(this.posX + 30, this.posY + 10, 10, 20);
+        notifyObserver(game);
 	}
 
 	public Rectangle getHitBox() {
@@ -143,4 +163,20 @@ public class Player extends Character {
 		this.rright = rright;
 	}
 
+    @Override
+    public void notifyObserver(Observer observer) {
+        observer.update();
+    }
+
+    @Override
+    public void run() {
+        while (!dead) {
+            try {
+                update();
+                Thread.sleep(30);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

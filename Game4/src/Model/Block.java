@@ -56,4 +56,9 @@ public class Block implements Collidable {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+    @Override
+    public void getDamage(int damage) {
+
+    }
 }

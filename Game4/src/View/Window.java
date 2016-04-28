@@ -5,11 +5,9 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-import Model.Block;
-import Model.Monster;
-import Model.Player;
+import Model.*;
 
-public class Window extends JFrame {
+public class Window extends JFrame implements Observer {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -23,11 +21,16 @@ public class Window extends JFrame {
         this.setVisible(true);
     }
 
-    public void draw(char[][] mapMatrix, ArrayList<Player> players, ArrayList<Monster> monsters, ArrayList<Block> blocks) {
-        map.refresh(mapMatrix, players, monsters, blocks);
+    public void draw(char[][] mapMatrix, ArrayList<Player> players, ArrayList<Monster> monsters, ArrayList<Block> blocks, ArrayList<Projectile> projectiles) {
+        map.refresh(mapMatrix, players, monsters, blocks, projectiles);
     }
 
     public void setKeyListener(KeyListener controller) {
         this.map.addKeyListener(controller);
+    }
+
+    @Override
+    public void update() {
+        this.map.repaint();
     }
 }

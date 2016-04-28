@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import Model.Block;
 import Model.Monster;
 import Model.Player;
+import Model.Projectile;
 
 public class Map extends JPanel {
 
@@ -20,6 +21,7 @@ public class Map extends JPanel {
 	private ArrayList<Player> players;
 	private ArrayList<Monster> monsters;
 	private ArrayList<Block> blocks;
+    private ArrayList<Projectile> projectiles;
 
 	private final int sizeSquarre = 40;
 
@@ -65,15 +67,24 @@ public class Map extends JPanel {
 				g.setColor(Color.cyan);
 				g.fillOval(x, y, sizeSquarre, sizeSquarre);
 			}
+
+            for (Projectile projectile : projectiles) {
+                int x = (int) projectile.getHitbox().getX();
+                int y = (int) projectile.getHitbox().getY();
+                int width = (int) projectile.getHitbox().getWidth();
+                int height = (int) projectile.getHitbox().getHeight();
+                g.setColor(Color.YELLOW);
+                g.fillRect(x, y, width, height);
+            }
 		}
 	}
 
 	public void refresh(char[][] mapMatrix, ArrayList<Player> players, ArrayList<Monster> monsters,
-			ArrayList<Block> blocks) {
+						ArrayList<Block> blocks, ArrayList<Projectile> projectiles) {
 		this.mapMatrix = mapMatrix;
 		this.players = players;
 		this.monsters = monsters;
 		this.blocks = blocks;
-		repaint();
+		this.projectiles = projectiles;
 	}
 }

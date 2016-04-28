@@ -2,7 +2,7 @@ package Model;
 
 import java.awt.*;
 
-public abstract class Character implements Collidable {
+public abstract class Character implements Collidable, Subject, Runnable {
 
 	protected int posX;
 	protected int posY;
@@ -10,13 +10,12 @@ public abstract class Character implements Collidable {
 	protected int speedY = 0; // directeurs
 	protected int speed = 3;
 
-	protected final int sizeSquarre = 40;
-
+	protected final int sizeSquare = 40;
 	protected int dir;
-
 	private int health;
 	private Rectangle hitBox;
 
+	public boolean dead = false;
 	private boolean movingLeft;
 	private boolean movingRight;
 	private boolean movingUp;
@@ -59,7 +58,7 @@ public abstract class Character implements Collidable {
 	}
 
 	public void setPosX(int posX) {
-		this.posX = posX * sizeSquarre; // *50 : en reference a la taille de la
+		this.posX = posX * sizeSquare; // *50 : en reference a la taille de la
 										// map
 	}
 
@@ -68,7 +67,7 @@ public abstract class Character implements Collidable {
 	}
 
 	public void setPosY(int posY) {
-		this.posY = posY * sizeSquarre;
+		this.posY = posY * sizeSquare;
 	}
 
 	public int getSpeed() {
@@ -88,6 +87,7 @@ public abstract class Character implements Collidable {
 			this.health = 100;
 		} else if (health <= 0) {
 			this.health = 0;
+            this.dead = true;
 		} else {
 			this.health = health;
 		}

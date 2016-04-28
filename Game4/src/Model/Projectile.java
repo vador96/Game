@@ -2,24 +2,27 @@ package Model;
 
 import java.awt.*;
 
-public class Projectile implements Damage, Collidable {
+public class Projectile implements Damage, Collidable, Runnable {
 
 	private int damage;
 	private int speed;
 	private int direction;
 	public boolean visible = true;
 	private Rectangle hitBox;
+    private Thread thread;
 
 	public Projectile(int posX, int posY, int direction, int speed, int damage) {
 		this.hitBox = new Rectangle(posX, posY, 10, 10);
 		this.speed = speed;
 		this.damage = damage;
 		this.direction = direction;
+        this.thread = new Thread(this);
+        this.thread.start();
 	}
 
 	@Override
 	public void doDamage(int damage, Collidable collidable) {
-		// collidable.getDamage(damage);
+		collidable.getDamage(damage);
 	}
 
 	@Override
@@ -65,10 +68,10 @@ public class Projectile implements Damage, Collidable {
 		return 0;
 	}
 
-	//@Override
-	//public void getDamage(int damage) {
-	//	this.explode();
-	//}
+	@Override
+	public void getDamage(int damage) {
+		this.explode();
+	}
 
 	public void update() {
 		if (direction == 0) {
@@ -82,4 +85,15 @@ public class Projectile implements Damage, Collidable {
 		}
 	}
 
+	@Override
+	public void run() {
+		while (visible) {
+            try {
+                update();
+                Thread.sleep(30);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+	}
 }
