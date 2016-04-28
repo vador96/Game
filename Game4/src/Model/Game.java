@@ -94,8 +94,24 @@ public class Game implements Runnable {
 		// players.get(0).attack();
 	}
 
-	public void stopPlayer() {
-		players.get(0).move(0, 0);
+	public void stopRight() {
+		players.get(0).setMovingRight(false);
+		players.get(0).stop();
+	}
+
+	public void stopLeft() {
+		players.get(0).setMovingLeft(false);
+		players.get(0).stop();
+	}
+
+	public void stopUp() {
+		players.get(0).setMovingUp(false);
+		players.get(0).stop();
+	}
+
+	public void stopDown() {
+		players.get(0).setMovingDown(false);
+		players.get(0).stop();
 	}
 
 	public void moveMonsters() {

@@ -10,22 +10,57 @@ public abstract class Character implements Collidable {
 	protected int speedY = 0; // directeurs
 	protected int speed = 3;
 
+	protected final int sizeSquarre = 40;
+
 	protected int dir;
 
 	private int health;
 	private Rectangle hitBox;
 
-	protected boolean moveLeft = true;
-	protected boolean moveRight = true;
-	protected boolean moveUp = true;
-	protected boolean moveDown = true;
+	private boolean movingLeft;
+	private boolean movingRight;
+	private boolean movingUp;
+	private boolean movingDown;
+
+	public boolean isMovingLeft() {
+		return movingLeft;
+	}
+
+	public void setMovingLeft(boolean movingLeft) {
+		this.movingLeft = movingLeft;
+	}
+
+	public boolean isMovingRight() {
+		return movingRight;
+	}
+
+	public void setMovingRight(boolean movingRight) {
+		this.movingRight = movingRight;
+	}
+
+	public boolean isMovingUp() {
+		return movingUp;
+	}
+
+	public void setMovingUp(boolean movingUp) {
+		this.movingUp = movingUp;
+	}
+
+	public boolean isMovingDown() {
+		return movingDown;
+	}
+
+	public void setMovingDown(boolean movingDown) {
+		this.movingDown = movingDown;
+	}
 
 	public int getPosX() {
 		return posX;
 	}
 
 	public void setPosX(int posX) {
-		this.posX = posX * 50; // *50 : en reference a la taille de la map
+		this.posX = posX * sizeSquarre; // *50 : en reference a la taille de la
+										// map
 	}
 
 	public int getPosY() {
@@ -33,7 +68,7 @@ public abstract class Character implements Collidable {
 	}
 
 	public void setPosY(int posY) {
-		this.posY = posY * 50;
+		this.posY = posY * sizeSquarre;
 	}
 
 	public int getSpeed() {
@@ -59,20 +94,38 @@ public abstract class Character implements Collidable {
 	}
 
 	public void move(int dx, int dy) {
-		if (dx < 0 && moveLeft) {
+		if (dx < 0) {
 			this.posX = posX + speed * dx;
 			dir = 0;
-		} else if (dx > 0 && moveRight) {
+			setMovingLeft(true);
+		} else if (dx > 0) {
 			this.posX = posX + speed * dx;
 			dir = 2;
-		} else if (dy < 0 && moveUp) {
+			setMovingRight(true);
+		} else if (dy < 0) {
 			this.posY = posY + speed * dy;
 			dir = 1;
-		} else if (dy > 0 && moveDown) {
+			setMovingUp(true);
+		} else if (dy > 0) {
 			this.posY = posY + speed * dy;
 			dir = 3;
+			setMovingDown(true);
 		}
 		this.speedX = dx;
 		this.speedY = dy;
+	}
+
+	public void stop() {
+		if (isMovingRight() == false && isMovingLeft() == false && isMovingUp() == false && isMovingDown() == false) {
+			move(0, 0);
+		} else if (isMovingRight() == false && isMovingLeft() == true) {
+			move(-1, 0);
+		} else if (isMovingRight() == true && isMovingLeft() == false) {
+			move(1, 0);
+		} else if (isMovingUp() == false && isMovingDown() == true) {
+			move(0, 1);
+		} else if (isMovingUp() == true && isMovingDown() == false) {
+			move(0, -1);
+		}
 	}
 }

@@ -15,10 +15,10 @@ public class Player extends Character {
 		this.setPosY(y);
 
 		this.hitBox = new Rectangle(this.posX, this.posY, 50, 50);
-		this.rtop = new Rectangle(this.posX + 20, this.posY, 10, 10);
-		this.rbot = new Rectangle(this.posX + 20, this.posY + 40, 10, 10);
-		this.rleft = new Rectangle(this.posX, this.posY + 20, 10, 10);
-		this.rright = new Rectangle(this.posX + 40, this.posY + 20, 10, 10);
+		this.rtop = new Rectangle(this.posX + 10, this.posY, 20, 10);
+		this.rbot = new Rectangle(this.posX + 10, this.posY + 30, 20, 10);
+		this.rleft = new Rectangle(this.posX, this.posY + 10, 10, 20);
+		this.rright = new Rectangle(this.posX + 30, this.posY + 10, 10, 20);
 
 		this.setHealth(hp);
 	}
@@ -30,7 +30,7 @@ public class Player extends Character {
 
 	@Override
 	public void setHitBox(int x, int y) {
-		this.hitBox.setRect(x, y, 50, 50);
+		this.hitBox.setBounds(x, y, sizeSquarre, sizeSquarre);
 	}
 
 	@Override
@@ -68,13 +68,13 @@ public class Player extends Character {
 
 		if (collidable instanceof Block) {
 			if (edge == 6) {
-				posX = xTarget - 49;
+				posX = xTarget - (sizeSquarre - 1);
 			} else if (edge == 4) {
-				posX = xTarget + 49;
+				posX = xTarget + (sizeSquarre - 1);
 			} else if (edge == 2) {
-				posY = yTarget - 49;
+				posY = yTarget - (sizeSquarre - 1);
 			} else if (edge == 8) {
-				posY = yTarget + 49;
+				posY = yTarget + (sizeSquarre - 1);
 			}
 		} else if (collidable instanceof Monster /*
 													 * || collidable instanceof
@@ -87,28 +87,24 @@ public class Player extends Character {
 			// montre te colle tu perds de la vie
 
 			if (edge == 6) {
-				posX = xTarget - 49;
+				posX = xTarget - (sizeSquarre - 1);
 			} else if (edge == 4) {
-				posX = xTarget + 49;
+				posX = xTarget + (sizeSquarre - 1);
 			} else if (edge == 2) {
-				posY = yTarget - 49;
+				posY = yTarget - (sizeSquarre - 1);
 			} else if (edge == 8) {
-				posY = yTarget + 49;
+				posY = yTarget + (sizeSquarre - 1);
 			}
 		}
 	}
 
 	public void update() {
-		moveDown = true;
-		moveLeft = true;
-		moveRight = true;
-		moveUp = true;
 		move(speedX, speedY);
 		setHitBox(this.posX, this.posY);
-		rtop.setRect(this.posX + 20, this.posY, 10, 10);
-		rbot.setRect(this.posX + 20, this.posY + 40, 10, 10);
-		rleft.setRect(this.posX, this.posY + 20, 10, 10);
-		rright.setRect(this.posX + 40, this.posY + 20, 10, 10);
+		rtop.setBounds(this.posX + 10, this.posY, 20, 10);
+		rbot.setBounds(this.posX + 10, this.posY + 30, 20, 10);
+		rleft.setBounds(this.posX, this.posY + 10, 10, 20);
+		rright.setBounds(this.posX + 30, this.posY + 10, 10, 20);
 	}
 
 	public Rectangle getHitBox() {

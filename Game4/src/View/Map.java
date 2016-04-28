@@ -21,6 +21,8 @@ public class Map extends JPanel {
 	private ArrayList<Monster> monsters;
 	private ArrayList<Block> blocks;
 
+	private final int sizeSquarre = 40;
+
 	public Map() {
 		this.setFocusable(true);
 		this.requestFocusInWindow();
@@ -35,7 +37,7 @@ public class Map extends JPanel {
 					int y = j;
 
 					Image img = Toolkit.getDefaultToolkit().getImage("data/Background.png");
-					g.drawImage(img, x * 50, y * 50, this);
+					g.drawImage(img, x * sizeSquarre, y * sizeSquarre, this);
 				}
 			}
 
@@ -61,7 +63,7 @@ public class Map extends JPanel {
 				int x = player.getPosX();
 				int y = player.getPosY();
 				g.setColor(Color.cyan);
-				g.fillOval(x, y, 50, 50);
+				g.fillOval(x, y, sizeSquarre, sizeSquarre);
 			}
 		}
 	}

@@ -18,11 +18,11 @@ public class Monster extends Character {
 		this.setPosX(x);
 		this.setPosY(y);
 		this.setSpeed(1);
-		this.hitBox = new Rectangle(posX, posY, 50, 50);
-		this.rtop = new Rectangle(this.posX + 20, this.posY, 10, 10);
-		this.rbot = new Rectangle(this.posX + 20, this.posY + 40, 10, 10);
-		this.rleft = new Rectangle(this.posX, this.posY + 20, 10, 10);
-		this.rright = new Rectangle(this.posX + 40, this.posY + 20, 10, 10);
+		this.hitBox = new Rectangle(posX, posY, sizeSquarre, sizeSquarre);
+		this.rtop = new Rectangle(this.posX + 10, this.posY, 20, 10);
+		this.rbot = new Rectangle(this.posX + 10, this.posY + 30, 20, 10);
+		this.rleft = new Rectangle(this.posX, this.posY + 10, 10, 20);
+		this.rright = new Rectangle(this.posX + 30, this.posY + 10, 10, 20);
 		this.fieldOfView = new Rectangle(posX - vision, posY - vision, 3 * vision, 3 * vision);
 		this.setHealth(hp);
 		random = new Random();
@@ -35,7 +35,7 @@ public class Monster extends Character {
 
 	@Override
 	public void setHitBox(int x, int y) {
-		this.hitBox.setBounds(x, y, 50, 50);
+		this.hitBox.setBounds(x, y, sizeSquarre, sizeSquarre);
 	}
 
 	public Rectangle getFieldOfView() {
@@ -43,7 +43,7 @@ public class Monster extends Character {
 	}
 
 	public void setFieldOfView(int x, int y) {
-		this.fieldOfView.setRect(x - vision, y - vision, 3 * vision, 3 * vision);
+		this.fieldOfView.setBounds(x - vision, y - vision, 3 * vision, 3 * vision);
 	}
 
 	@Override
@@ -80,13 +80,13 @@ public class Monster extends Character {
 
 		if (collidable instanceof Block || collidable instanceof Monster) {
 			if (edge == 6) {
-				posX = xTarget - 49;
+				posX = xTarget - (sizeSquarre - 1);
 			} else if (edge == 4) {
-				posX = xTarget + 49;
+				posX = xTarget + (sizeSquarre - 1);
 			} else if (edge == 2) {
-				posY = yTarget - 49;
+				posY = yTarget - (sizeSquarre - 1);
 			} else if (edge == 8) {
-				posY = yTarget + 49;
+				posY = yTarget + (sizeSquarre - 1);
 			}
 		} else if (collidable instanceof Player) {
 			/*
@@ -99,10 +99,10 @@ public class Monster extends Character {
 
 	public void update() {
 		setHitBox(this.posX, this.posY);
-		rtop.setRect(this.posX + 20, this.posY, 10, 10);
-		rbot.setRect(this.posX + 20, this.posY + 40, 10, 10);
-		rleft.setRect(this.posX, this.posY + 20, 10, 10);
-		rright.setRect(this.posX + 40, this.posY + 20, 10, 10);
+		rtop.setBounds(this.posX + 10, this.posY, 20, 10);
+		rbot.setBounds(this.posX + 10, this.posY + 30, 20, 10);
+		rleft.setBounds(this.posX, this.posY + 10, 10, 20);
+		rright.setBounds(this.posX + 30, this.posY + 10, 10, 20);
 		setFieldOfView(this.posX, this.posY);
 	}
 
@@ -120,22 +120,30 @@ public class Monster extends Character {
 		int dx = 0;
 		int dy = 0;
 
-		if (posX <= x - 50) {
+		if (posX <= x - sizeSquarre) {
 			dx = 1;
-		} else if (posY <= y - 50) {
+		} else if (posY <= y - sizeSquarre) {
 			dy = 1;
-		} else if (posX >= x + 50) {
+		} else if (posX >= x + sizeSquarre) {
 			dx = -1;
-		} else if (posY >= y + 50) {
+		} else if (posY >= y + sizeSquarre) {
 			dy = -1;
-		} else if (posX == x - 49 && posY < y ) {
+		} else if (posX == x - (sizeSquarre - 1) && posY < y) {
 			dy = 1;
-		} else if (posX == x + 49 && posY < y) {
+		} else if (posX == x + (sizeSquarre - 1) && posY < y) {
 			dy = 1;
-		} else if (posX == x - 49 && posY > y) {
+		} else if (posX == x - (sizeSquarre - 1) && posY > y) {
 			dy = -1;
-		} else if (posX == x + 49 && posY > y) {
+		} else if (posX == x + (sizeSquarre - 1) && posY > y) {
 			dy = -1;
+		} else if (posY == y - (sizeSquarre - 1) && posX < x) {
+			dx = 1;
+		} else if (posY == y + (sizeSquarre - 1) && posX < x) {
+			dx = 1;
+		} else if (posY == y - (sizeSquarre - 1) && posX > x) {
+			dx = -1;
+		} else if (posY == y + (sizeSquarre - 1) && posX > x) {
+			dx = -1;
 		}
 		move(dx, dy);
 	}

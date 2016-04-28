@@ -8,7 +8,6 @@ import java.awt.event.KeyListener;
 public class Controller implements KeyListener {
 
     private Game game;
-
     public Controller(Game game) {
         this.game = game;
 
@@ -49,16 +48,16 @@ public class Controller implements KeyListener {
 
         switch (key) {
             case KeyEvent.VK_RIGHT:
-                game.stopPlayer();
+                game.stopRight();
                 break;
             case KeyEvent.VK_LEFT:
-                game.stopPlayer();
+                game.stopLeft();
                 break;
             case KeyEvent.VK_DOWN:
-                game.stopPlayer();
+                game.stopDown();
                 break;
             case KeyEvent.VK_UP:
-                game.stopPlayer();
+                game.stopUp();
                 break;
             case KeyEvent.VK_SPACE:
                 break;

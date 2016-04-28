@@ -6,11 +6,12 @@ public class Block implements Collidable {
     private int posX;
     private int posY;
     private Rectangle hitBox;
+    private final int sizeSquarre = 40;
 
     public Block(int x, int y){
         this.setPosX(x);
         this.setPosY(y);
-        this.hitBox = new Rectangle(this.posX, this.posY, 50, 50);
+        this.hitBox = new Rectangle(this.posX, this.posY, sizeSquarre, sizeSquarre);
     }
 
     public int getPosX(){
@@ -18,7 +19,7 @@ public class Block implements Collidable {
     }
 
     public void setPosX(int posX) {
-        this.posX = posX*50; //  *50 : en reference a la taille de la map
+        this.posX = posX*sizeSquarre; //  *50 : en reference a la taille de la map
     }
 
     public int getPosY(){
@@ -26,7 +27,7 @@ public class Block implements Collidable {
     }
 
     public void setPosY(int posY) {
-        this.posY = posY*50; //  *50 : en reference a la taille de la map
+        this.posY = posY*sizeSquarre; //  *50 : en reference a la taille de la map
     }
 
     @Override
@@ -36,7 +37,7 @@ public class Block implements Collidable {
 
     @Override
     public void setHitBox(int x, int y) {
-        this.hitBox.setRect(x, y, 50, 50);
+        this.hitBox.setBounds(x, y,sizeSquarre, sizeSquarre);
     }
 
     @Override
