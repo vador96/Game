@@ -77,14 +77,23 @@ public class Monster extends Character {
 	public void applyCollision(Collidable collidable, int edge) {
 		int xTarget = (int) collidable.getHitbox().getX();
 		int yTarget = (int) collidable.getHitbox().getY();
-		if (edge == 6) {
-			posX = xTarget - 49;
-		} else if (edge == 4) {
-			posX = xTarget + 49;
-		} else if (edge == 2) {
-			posY = yTarget - 49;
-		} else if (edge == 8) {
-			posY = yTarget + 49;
+
+		if (collidable instanceof Block || collidable instanceof Monster) {
+			if (edge == 6) {
+				posX = xTarget - 49;
+			} else if (edge == 4) {
+				posX = xTarget + 49;
+			} else if (edge == 2) {
+				posY = yTarget - 49;
+			} else if (edge == 8) {
+				posY = yTarget + 49;
+			}
+		} else if (collidable instanceof Player) {
+			/*
+			 * if (edge == 6) { move(0,0); } else if (edge == 4) { move(0,0); }
+			 * else if (edge == 2) { move(0,0); } else if (edge == 8) {
+			 * move(0,0); }
+			 */
 		}
 	}
 
@@ -111,13 +120,21 @@ public class Monster extends Character {
 		int dx = 0;
 		int dy = 0;
 
-		if (posX <= x) {
+		if (posX <= x - 50) {
 			dx = 1;
-		} else if (posY <= y) {
+		} else if (posY <= y - 50) {
 			dy = 1;
-		} else if (posX > x + 20) {
+		} else if (posX >= x + 50) {
 			dx = -1;
-		} else if (posY > y + 20) {
+		} else if (posY >= y + 50) {
+			dy = -1;
+		} else if (posX == x - 49 && posY < y ) {
+			dy = 1;
+		} else if (posX == x + 49 && posY < y) {
+			dy = 1;
+		} else if (posX == x - 49 && posY > y) {
+			dy = -1;
+		} else if (posX == x + 49 && posY > y) {
 			dy = -1;
 		}
 		move(dx, dy);

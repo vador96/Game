@@ -87,21 +87,13 @@ public class Player extends Character {
 			// montre te colle tu perds de la vie
 
 			if (edge == 6) {
-				// doDamage
-				// move(-1, 0);
-				move(0, 0);
+				posX = xTarget - 49;
 			} else if (edge == 4) {
-				// doDamage
-				// move(1, 0);
-				move(0, 0);
+				posX = xTarget + 49;
 			} else if (edge == 2) {
-				// doDamage
-				// move(0, -1);
-				move(0, 0);
+				posY = yTarget - 49;
 			} else if (edge == 8) {
-				// doDamage
-				// move(0, 1);
-				move(0, 0);
+				posY = yTarget + 49;
 			}
 		}
 	}
