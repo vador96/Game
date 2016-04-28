@@ -24,7 +24,8 @@ public class Level {
 
     private void buildLevel(String filename) throws IOException {
 
-        BufferedReader reader = new BufferedReader(new FileReader(filename));
+        @SuppressWarnings("resource")
+		BufferedReader reader = new BufferedReader(new FileReader(filename));
         String line;
         while ((line = reader.readLine()) != null) {
             lines.add(line);
@@ -35,9 +36,9 @@ public class Level {
 
     private char[][] generateMap() {
         mapMatrix = new char[height][width];
-        for (int i = 0; i<height; i++) {
-            for (int j = 0; j<width; j++) {
-                char item = lines.get(i).charAt(j);
+        for (int j = 0; j<height; j++) {
+            for (int i = 0; i<width; i++) {
+                char item = lines.get(j).charAt(i);
                 mapMatrix[i][j] = item;
             }
         }

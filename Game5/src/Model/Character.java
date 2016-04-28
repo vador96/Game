@@ -1,7 +1,5 @@
 package Model;
 
-import java.awt.*;
-
 public abstract class Character implements Collidable, Subject, Runnable {
 
 	protected int posX;
@@ -11,9 +9,10 @@ public abstract class Character implements Collidable, Subject, Runnable {
 	protected int speed = 3;
 
 	protected final int sizeSquare = 40;
-	protected int dir;
+	protected int dir = 3;
+	private int maxHealth;
 	private int health;
-	private Rectangle hitBox;
+	//private Rectangle hitBox;
 
 	public boolean dead = false;
 	private boolean movingLeft;
@@ -77,14 +76,22 @@ public abstract class Character implements Collidable, Subject, Runnable {
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
+	
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+
+	public void setMaxHealth(int maxHealth) {
+		this.maxHealth = maxHealth;
+	}
 
 	public int getHealth() {
 		return health;
 	}
 
 	public void setHealth(int health) {
-		if (health >= 100) {
-			this.health = 100;
+		if (health >= maxHealth) {
+			this.health = maxHealth;
 		} else if (health <= 0) {
 			this.health = 0;
             this.dead = true;
@@ -96,23 +103,31 @@ public abstract class Character implements Collidable, Subject, Runnable {
 	public void move(int dx, int dy) {
 		if (dx < 0) {
 			this.posX = posX + speed * dx;
-			dir = 0;
+			dir = 0; //LEFT
 			setMovingLeft(true);
 		} else if (dx > 0) {
 			this.posX = posX + speed * dx;
-			dir = 2;
+			dir = 2; //RIGHT
 			setMovingRight(true);
 		} else if (dy < 0) {
 			this.posY = posY + speed * dy;
-			dir = 1;
+			dir = 1; //UP
 			setMovingUp(true);
 		} else if (dy > 0) {
 			this.posY = posY + speed * dy;
-			dir = 3;
+			dir = 3; //DOWN
 			setMovingDown(true);
 		}
 		this.speedX = dx;
 		this.speedY = dy;
+	}
+
+	public int getDir() {
+		return dir;
+	}
+
+	public void setDir(int dir) {
+		this.dir = dir;
 	}
 
 	public void stop() {

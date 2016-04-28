@@ -19,6 +19,14 @@ public class Projectile implements Damage, Collidable, Runnable {
         this.thread = new Thread(this);
         this.thread.start();
 	}
+	
+	public int getDirection() {
+		return direction;
+	}
+
+	public void setDirection(int direction) {
+		this.direction = direction;
+	}
 
 	@Override
 	public void doDamage(int damage, Collidable collidable) {

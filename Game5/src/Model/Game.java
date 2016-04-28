@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Game implements Observer, Subject {
 
 	private Window window;
-	private Thread thread;
+	//private Thread thread;
 	private Level level;
 	private char[][] map;
 	private ArrayList<Player> players = new ArrayList<>();
@@ -18,9 +18,9 @@ public class Game implements Observer, Subject {
 
 	public Game(Window window, Level level) {
 		this.window = window;
-		this.level = level;
+		this.setLevel(level);
 		this.map = level.mapMatrix;
-		players.add(new Player(1, 1, 100, this)); // pos < dimension matrice
+		players.add(new Player(1, 1, 1000, this)); // pos < dimension matrice
 		this.generateCollidables();
 		this.notifyObserver(window);
 	}
@@ -76,7 +76,6 @@ public class Game implements Observer, Subject {
                 if (collidables.get(j) != projectiles.get(i) && projectiles.get(i).collides(collidables.get(j)) && collidables.get(j) != players.get(0)) {
                     projectiles.get(i).applyCollision(collidables.get(j), 0);
                     projectiles.remove(i);
-
                 }
             }
 		}
@@ -132,5 +131,13 @@ public class Game implements Observer, Subject {
     public void playerAttack() {
         players.get(0).attack();
     }
+
+	public Level getLevel() {
+		return level;
+	}
+
+	public void setLevel(Level level) {
+		this.level = level;
+	}
 
 }

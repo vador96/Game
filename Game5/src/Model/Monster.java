@@ -15,7 +15,7 @@ public class Monster extends Character {
 	protected Random random;
 
 	private Thread thread;
-    private Game game;
+	private Game game;
 
 	public Monster(int x, int y, int hp, Game game) {
 		this.setPosX(x);
@@ -27,11 +27,12 @@ public class Monster extends Character {
 		this.rleft = new Rectangle(this.posX, this.posY + 10, 10, 20);
 		this.rright = new Rectangle(this.posX + 30, this.posY + 10, 10, 20);
 		this.fieldOfView = new Rectangle(posX - vision, posY - vision, 3 * vision, 3 * vision);
+		this.setMaxHealth(hp);
 		this.setHealth(hp);
 		random = new Random();
-        this.game = game;
-        this.thread = new Thread(this);
-        this.thread.start();
+		this.game = game;
+		this.thread = new Thread(this);
+		this.thread.start();
 	}
 
 	@Override
@@ -110,18 +111,18 @@ public class Monster extends Character {
 	}
 
 	public void update() {
-        lookForPlayer(game);
+		lookForPlayer(game);
 		setHitBox(this.posX, this.posY);
 		rtop.setBounds(this.posX + 10, this.posY, 20, 10);
 		rbot.setBounds(this.posX + 10, this.posY + 30, 20, 10);
 		rleft.setBounds(this.posX, this.posY + 10, 10, 20);
 		rright.setBounds(this.posX + 30, this.posY + 10, 10, 20);
 		setFieldOfView(this.posX, this.posY);
-        notifyObserver(game);
+		notifyObserver(game);
 	}
 
 	public void lookForPlayer(Game game) {
-        Player target = game.getPlayers().get(0);
+		Player target = game.getPlayers().get(0);
 		if (this.fieldOfView.intersects(target.getHitbox())) {
 			huntTarget(target);
 		} else {
@@ -167,7 +168,6 @@ public class Monster extends Character {
 		if (random.nextInt(10) == 7) {
 			dir = random.nextInt(4);
 		}
-
 		if (dir == 2) {
 			move(1, 0);
 		} else if (dir == 0) {
@@ -181,20 +181,20 @@ public class Monster extends Character {
 		}
 	}
 
-    @Override
-    public void run() {
-        while (!dead) {
-            try {
-                update();
-                Thread.sleep(30);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+	@Override
+	public void run() {
+		while (!dead) {
+			try {
+				update();
+				Thread.sleep(17);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-    @Override
-    public void notifyObserver(Observer observer) {
-        observer.update();
-    }
+	@Override
+	public void notifyObserver(Observer observer) {
+		observer.update();
+	}
 }
