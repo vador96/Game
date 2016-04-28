@@ -153,11 +153,9 @@ public class Game implements Observer, Subject {
 		collidables.removeAll(collidables);
 		blocks.removeAll(blocks);
 		projectiles.removeAll(projectiles);
-		players.removeAll(players);
 
 		this.level = new Level(nameLevel);
 		this.map = level.mapMatrix;
-		players.add(new Player(5, 5, 100, this));
 		this.generateCollidables();
 		this.notifyObserver(window);
 	}

@@ -123,6 +123,7 @@ public class Player extends Character {
 			}
 		} else if (collidable instanceof Gate) {
 			game.loadLevel(((Gate) collidable).getNameLevel());
+			posX = 1;
 		}
 	}
 
