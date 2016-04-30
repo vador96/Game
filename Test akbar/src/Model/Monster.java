@@ -8,7 +8,6 @@ public class Monster extends Character {
 	private Rectangle fieldOfView;
 	private int vision = 100;
 	protected Random random;
-	private final int damage = 1;
 
 	public Monster(int x, int y, int speed, int hp, Game game) {
 		super(x, y, speed, hp, game);
@@ -22,26 +21,17 @@ public class Monster extends Character {
 
 	public void setFieldOfView(int x, int y) {
 		this.fieldOfView.setBounds(x - vision, y - vision, 3 * vision, 3 * vision);
-	}
-
-	public void getDamageFromPlayer(int damage) {
-		getDamage(10);
-	}
-	
-	public void getDamageFromMonster(int damage) {
-		
-	}
-
-	@Override
-	public void applyCollisionOn(Collidable collidable) {
-		collidable.getDamageFromMonster(damage);
-		collidable.goBack(this.hitbox);
-	}
+	}	
 
 	public void update() {
-		super.update();
+		lookForPlayer(game);
+		setHitbox(this.posX, this.posY);
+		rtop.setBounds(this.posX + 10, this.posY, 20, 10);
+		rbot.setBounds(this.posX + 10, this.posY + 30, 20, 10);
+		rleft.setBounds(this.posX, this.posY + 10, 10, 20);
+		rright.setBounds(this.posX + 30, this.posY + 10, 10, 20);
 		setFieldOfView(this.posX, this.posY);
-		lookForPlayer(this.getGame());
+		notifyObserver(game);
 	}
 
 	public void lookForPlayer(Game game) {
@@ -59,13 +49,13 @@ public class Monster extends Character {
 		int dx = 0;
 		int dy = 0;
 
-		if (posX < x - sizeSquare) {
+		if (posX <= x - sizeSquare) {
 			dx = 1;
-		} else if (posY <y - sizeSquare) {
+		} else if (posY <= y - sizeSquare) {
 			dy = 1;
-		} else if (posX > x + sizeSquare) {
+		} else if (posX >= x + sizeSquare) {
 			dx = -1;
-		} else if (posY > y + sizeSquare) {
+		} else if (posY >= y + sizeSquare) {
 			dy = -1;
 		} else if (posX == x - (sizeSquare - 1) && posY < y) {
 			dy = 1;
@@ -103,19 +93,22 @@ public class Monster extends Character {
 			move(0, 0);
 		}
 	}
-	
-	public int collidesWith(Rectangle box) {
-		int edge = 0;
-		if (this.rbot.intersects(box)) {
-			edge = 2;
-		} else if (this.rtop.intersects(box)) {
-			edge = 8;
-		} else if (this.rleft.intersects(box)) {
-			edge = 4;
-		} else if (this.rright.intersects(box)) {
-			edge = 6;
+
+	@Override
+	public void run() {
+		while (!dead) {
+			try {
+				update();
+				Thread.sleep(17);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
-		return edge;
+	}
+
+	@Override
+	public void notifyObserver(Observer observer) {
+		observer.update();
 	}
 
 	@Override
@@ -124,6 +117,7 @@ public class Monster extends Character {
 		
 		int xTarget = (int) hitbox.getX();
 		int yTarget = (int) hitbox.getY();
+		System.out.println("collision");
 		if (edge == 6) {
 			posX = xTarget - (sizeSquare );
 		} else if (edge == 4) {
@@ -133,5 +127,22 @@ public class Monster extends Character {
 		} else if (edge == 8) {
 			posY = yTarget + (sizeSquare );
 		}
+	}
+
+	@Override
+	public void applyCollisionOn(Collidable collidable) {
+		collidable.goBack(this.hitbox);
+		collidable.getDamageFromMonster(1);
+	}
+
+	@Override
+	public void getDamageFromMonster(int damage) {
+		
+	}
+
+	@Override
+	public void getDamageFromPlayer(int damage) {
+		// TODO Auto-generated method stub
+		
 	}
 }

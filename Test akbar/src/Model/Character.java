@@ -13,25 +13,23 @@ public abstract class Character implements Collidable, Subject, Runnable {
 	protected int dir = 3;
 	private int maxHealth;
 	private int health;
-
+	
 	protected Rectangle hitbox;
 	protected Rectangle rtop;
 	protected Rectangle rbot;
 	protected Rectangle rleft;
 	protected Rectangle rright;
-
+	
 	private Thread thread;
-	private Game game;
-
-	// private Rectangle hitBox;
-
+	protected Game game;
+	
 	public boolean dead = false;
-
+	
 	private boolean movingLeft;
 	private boolean movingRight;
 	private boolean movingUp;
 	private boolean movingDown;
-
+	
 	public Character(int x, int y, int speed, int hp, Game game) {
 		this.setPosX(x);
 		this.setPosY(y);
@@ -45,7 +43,7 @@ public abstract class Character implements Collidable, Subject, Runnable {
 		this.thread = new Thread(this);
 		this.thread.start();
 	}
-
+	
 	public void generateHitbox() {
 		this.hitbox = new Rectangle(this.posX, this.posY, sizeSquare, sizeSquare);
 		this.rtop = new Rectangle(this.posX + 10, this.posY, 20, 10);
@@ -53,7 +51,7 @@ public abstract class Character implements Collidable, Subject, Runnable {
 		this.rleft = new Rectangle(this.posX, this.posY + 10, 10, 20);
 		this.rright = new Rectangle(this.posX + 30, this.posY + 10, 10, 20);
 	}
-
+	
 	public Game getGame() {
 		return this.game;
 	}
@@ -114,7 +112,7 @@ public abstract class Character implements Collidable, Subject, Runnable {
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
-
+	
 	@Override
 	public Rectangle getHitbox() {
 		return hitbox;
@@ -124,7 +122,7 @@ public abstract class Character implements Collidable, Subject, Runnable {
 	public void setHitbox(int x, int y) {
 		this.hitbox.setBounds(x, y, sizeSquare, sizeSquare);
 	}
-
+	
 	public int getMaxHealth() {
 		return maxHealth;
 	}
@@ -142,7 +140,7 @@ public abstract class Character implements Collidable, Subject, Runnable {
 			this.health = maxHealth;
 		} else if (health <= 0) {
 			this.health = 0;
-			this.dead = true;
+            this.dead = true;
 		} else {
 			this.health = health;
 		}
@@ -151,19 +149,19 @@ public abstract class Character implements Collidable, Subject, Runnable {
 	public void move(int dx, int dy) {
 		if (dx < 0) {
 			this.posX = posX + speed * dx;
-			dir = 0; // LEFT
+			dir = 0; //LEFT
 			setMovingLeft(true);
 		} else if (dx > 0) {
 			this.posX = posX + speed * dx;
-			dir = 2; // RIGHT
+			dir = 2; //RIGHT
 			setMovingRight(true);
 		} else if (dy < 0) {
 			this.posY = posY + speed * dy;
-			dir = 1; // UP
+			dir = 1; //UP
 			setMovingUp(true);
 		} else if (dy > 0) {
 			this.posY = posY + speed * dy;
-			dir = 3; // DOWN
+			dir = 3; //DOWN
 			setMovingDown(true);
 		}
 		this.speedX = dx;
@@ -177,7 +175,7 @@ public abstract class Character implements Collidable, Subject, Runnable {
 	public void setDir(int dir) {
 		this.dir = dir;
 	}
-
+	
 	@Override
 	public boolean collides(Collidable collidable) {
 		boolean collision;
@@ -188,6 +186,21 @@ public abstract class Character implements Collidable, Subject, Runnable {
 			collision = false;
 		}
 		return collision;
+	}
+	
+	@Override
+	public int collidesWith(Rectangle box) {
+		int edge = 0;
+		if (this.rbot.intersects(box)) {
+			edge = 2;
+		} else if (this.rtop.intersects(box)) {
+			edge = 8;
+		} else if (this.rleft.intersects(box)) {
+			edge = 4;
+		} else if (this.rright.intersects(box)) {
+			edge = 6;
+		}
+		return edge;
 	}
 
 	public void attack() {
@@ -222,6 +235,20 @@ public abstract class Character implements Collidable, Subject, Runnable {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public void stop() {
+		if (isMovingRight() == false && isMovingLeft() == false && isMovingUp() == false && isMovingDown() == false) {
+			move(0, 0);
+		} else if (isMovingRight() == false && isMovingLeft() == true) {
+			move(-1, 0);
+		} else if (isMovingRight() == true && isMovingLeft() == false) {
+			move(1, 0);
+		} else if (isMovingUp() == false && isMovingDown() == true) {
+			move(0, 1);
+		} else if (isMovingUp() == true && isMovingDown() == false) {
+			move(0, -1);
 		}
 	}
 }
