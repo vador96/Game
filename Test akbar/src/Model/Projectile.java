@@ -12,12 +12,36 @@ public class Projectile implements Damage, Collidable, Runnable {
     private Thread thread;
 
 	public Projectile(int posX, int posY, int direction, int speed, int damage) {
-		this.hitBox = new Rectangle(posX, posY, 10, 10);
+		generateHitbox(posX, posY, direction);
 		this.speed = speed;
 		this.damage = damage;
 		this.direction = direction;
         this.thread = new Thread(this);
         this.thread.start();
+	}
+	
+	public void generateHitbox(int posX, int posY, int direction) {
+		int x = 0;
+		int y = 0;
+		switch (direction) {
+		case 0:
+			x = posX - 10;
+			y = posY + 20;
+			break;
+		case 1:
+			x = posX + 10;
+			y = posY - 10;
+			break;
+		case 2:
+			x = posX + 40;
+			y = posY + 20;
+			break;
+		case 3:
+			x = posX + 10;
+			y = posY + 40;
+			break;
+		}
+		this.hitBox = new Rectangle(x, y, 10, 10);
 	}
 	
 	public int getDirection() {
@@ -30,7 +54,7 @@ public class Projectile implements Damage, Collidable, Runnable {
 
 	@Override
 	public void doDamage(int damage, Collidable collidable) {
-		collidable.getDamageFromMonster(damage);
+		collidable.getDamageFromPlayer(damage);
 	}
 
 	@Override
@@ -67,23 +91,12 @@ public class Projectile implements Damage, Collidable, Runnable {
 	@Override
 	public void applyCollisionOn(Collidable collidable) {
 		if (visible) {
-			doDamage(damage, collidable);
+			doDamage(this.damage, collidable);
+			this.explode();
 		}
 	}
 
-	@Override
-	public int collidesWith(Rectangle box) {
-		return 0;
-	}
-
-	public void getDamage(int damage) {
-		this.explode();
-	}
 	
-	@Override
-	public void getDamageFromMonster(int damage) {
-		
-	}
 
 	public void update() {
 		if (direction == 0) {
@@ -108,15 +121,25 @@ public class Projectile implements Damage, Collidable, Runnable {
             }
         }
 	}
-
+	
 	@Override
-	public void goBack(Rectangle hitBox) {
+	public void getDamageFromMonster(int damage) {
+		
+	}
+	
+	@Override
+	public void getDamageFromPlayer(int damage) {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public int collidesWith(Rectangle box) {
+		return 0;
+	}
 
 	@Override
-	public void getDamageFromPlayer(int damage) {
+	public void goBack(Rectangle hitBox) {
 		// TODO Auto-generated method stub
 		
 	}

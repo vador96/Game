@@ -1,5 +1,7 @@
 package Model;
 
+import java.awt.Rectangle;
+
 public abstract class Character implements Collidable, Subject, Runnable {
 
 	protected int posX;
@@ -8,17 +10,51 @@ public abstract class Character implements Collidable, Subject, Runnable {
 	protected int speedY = 0; // directeurs
 	protected int speed = 3;
 
-	protected final int sizeSquare = 40;
 	protected int dir = 3;
 	private int maxHealth;
 	private int health;
-	//private Rectangle hitBox;
-
+	
+	protected Rectangle hitbox;
+	protected Rectangle rtop;
+	protected Rectangle rbot;
+	protected Rectangle rleft;
+	protected Rectangle rright;
+	
+	private Thread thread;
+	protected Game game;
+	
 	public boolean dead = false;
+	
 	private boolean movingLeft;
 	private boolean movingRight;
 	private boolean movingUp;
 	private boolean movingDown;
+	
+	public Character(int x, int y, int speed, int hp, Game game) {
+		this.setPosX(x);
+		this.setPosY(y);
+		this.setSpeed(speed);
+
+		generateHitbox();
+
+		this.setMaxHealth(hp);
+		this.setHealth(hp);
+		this.game = game;
+		this.thread = new Thread(this);
+		this.thread.start();
+	}
+	
+	public void generateHitbox() {
+		this.hitbox = new Rectangle(this.posX, this.posY, sizeSquare, sizeSquare);
+		this.rtop = new Rectangle(this.posX + 10, this.posY, 20, 10);
+		this.rbot = new Rectangle(this.posX + 10, this.posY + 30, 20, 10);
+		this.rleft = new Rectangle(this.posX, this.posY + 10, 10, 20);
+		this.rright = new Rectangle(this.posX + 30, this.posY + 10, 10, 20);
+	}
+	
+	public Game getGame() {
+		return this.game;
+	}
 
 	public boolean isMovingLeft() {
 		return movingLeft;
@@ -77,6 +113,16 @@ public abstract class Character implements Collidable, Subject, Runnable {
 		this.speed = speed;
 	}
 	
+	@Override
+	public Rectangle getHitbox() {
+		return hitbox;
+	}
+
+	@Override
+	public void setHitbox(int x, int y) {
+		this.hitbox.setBounds(x, y, sizeSquare, sizeSquare);
+	}
+	
 	public int getMaxHealth() {
 		return maxHealth;
 	}
@@ -128,6 +174,68 @@ public abstract class Character implements Collidable, Subject, Runnable {
 
 	public void setDir(int dir) {
 		this.dir = dir;
+	}
+	
+	@Override
+	public boolean collides(Collidable collidable) {
+		boolean collision;
+		Rectangle box = collidable.getHitbox();
+		if (this.hitbox.intersects(box)) {
+			collision = true;
+		} else {
+			collision = false;
+		}
+		return collision;
+	}
+	
+	@Override
+	public int collidesWith(Rectangle box) {
+		int edge = 0;
+		if (this.rbot.intersects(box)) {
+			edge = 2;
+		} else if (this.rtop.intersects(box)) {
+			edge = 8;
+		} else if (this.rleft.intersects(box)) {
+			edge = 4;
+		} else if (this.rright.intersects(box)) {
+			edge = 6;
+		}
+		return edge;
+	}
+
+	public void attack() {
+		game.addProjectile(posX, posY, dir, speed * 3, 10);
+	}
+
+	public void getDamage(int damage) {
+		int hp = this.getHealth();
+		this.setHealth(hp - damage);
+	}
+
+	public void update() {
+		setHitbox(this.posX, this.posY);
+		rtop.setBounds(this.posX + 10, this.posY, 20, 10);
+		rbot.setBounds(this.posX + 10, this.posY + 30, 20, 10);
+		rleft.setBounds(this.posX, this.posY + 10, 10, 20);
+		rright.setBounds(this.posX + 30, this.posY + 10, 10, 20);
+		notifyObserver(game);
+	}
+
+	@Override
+	public void notifyObserver(Observer observer) {
+		observer.update();
+	}
+
+	@Override
+	public void run() {
+		while (true) {
+			try {
+				update();
+				Thread.sleep(17);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void stop() {

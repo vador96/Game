@@ -20,7 +20,7 @@ public class Game implements Observer, Subject {
 		this.window = window;
 		this.setLevel(level);
 		this.map = level.mapMatrix;
-		players.add(new Player(1, 1, 1000, this)); // pos < dimension matrice
+		players.add(new Player(1, 1,4, 1000, this)); // pos < dimension matrice
 		this.generateCollidables();
 		this.notifyObserver(window);
 	}
@@ -52,7 +52,7 @@ public class Game implements Observer, Subject {
 					blocks.add(block);
 					collidables.add(block);
 				} else if (item == '2') {
-					Monster monster = new Monster(j, i, 100, this);
+					Monster monster = new Monster(j, i,1, 100, this);
 					monsters.add(monster);
 					collidables.add(monster);
 				} else if (item == 'G') {
