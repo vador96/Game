@@ -55,9 +55,8 @@ public class Player extends Character {
 	}
 
 	@Override
-	public int collidesWith(Collidable collidable) {
+	public int collidesWith(Rectangle box) {
 		int edge = 0;
-		Rectangle box = collidable.getHitbox();
 		if (this.rbot.intersects(box)) {
 			edge = 2;
 		} else if (this.rtop.intersects(box)) {
@@ -196,5 +195,23 @@ public class Player extends Character {
 
 	public void setReadyToAttack(boolean readyToAttack) {
 		this.readyToAttack = readyToAttack;
+	}
+
+	@Override
+	public void goBack(Rectangle hitbox) {
+		int edge = collidesWith(hitbox);
+
+		int xTarget = (int) hitbox.getX();
+		int yTarget = (int) hitbox.getY();
+
+		if (edge == 6) {
+			posX = xTarget - (sizeSquare - 1);
+		} else if (edge == 4) {
+			posX = xTarget + (sizeSquare - 1);
+		} else if (edge == 2) {
+			posY = yTarget - (sizeSquare - 1);
+		} else if (edge == 8) {
+			posY = yTarget + (sizeSquare - 1);
+		}
 	}
 }

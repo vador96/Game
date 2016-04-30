@@ -197,4 +197,16 @@ public class Monster extends Character {
 	public void notifyObserver(Observer observer) {
 		observer.update();
 	}
+
+	@Override
+	public void goBack(Rectangle hitBox) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int collidesWith(Rectangle box) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

@@ -72,7 +72,7 @@ public class Projectile implements Damage, Collidable, Runnable {
 	}
 
 	@Override
-	public int collidesWith(Collidable collidable) {
+	public int collidesWith(Rectangle box) {
 		return 0;
 	}
 
@@ -103,5 +103,11 @@ public class Projectile implements Damage, Collidable, Runnable {
                 e.printStackTrace();
             }
         }
+	}
+
+	@Override
+	public void goBack(Rectangle hitBox) {
+		// TODO Auto-generated method stub
+		
 	}
 }

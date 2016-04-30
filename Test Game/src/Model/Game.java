@@ -65,23 +65,19 @@ public class Game implements Observer, Subject {
 
 	public void checkCollision() {
 		for (int j = 0; j < collidables.size(); j++) {
-			if (collidables.get(j) != players.get(0) && players.get(0).collides(collidables.get(j))) {
-				int edge = players.get(0).collidesWith(collidables.get(j));
-				players.get(0).applyCollision(collidables.get(j), edge);
-			}
-			for (int i = 0; i < monsters.size(); i++) {
-				if (collidables.get(j) != monsters.get(i) && monsters.get(i).collides(collidables.get(j))) {
-					int edge = monsters.get(i).collidesWith(collidables.get(j));
-					monsters.get(i).applyCollision(collidables.get(j), edge);
+			for (int i = 0; i < blocks.size(); i++) {
+				if (collidables.get(j) != blocks.get(i) && blocks.get(i).collides(collidables.get(j))) {
+					blocks.get(i).applyCollision(collidables.get(j), 0);
 				}
 			}
+			/*
 			for (int i = 0; i < projectiles.size(); i++) {
 				if (collidables.get(j) != projectiles.get(i) && projectiles.get(i).collides(collidables.get(j))
 						&& collidables.get(j) != players.get(0)) {
 					projectiles.get(i).applyCollision(collidables.get(j), 0);
 					projectiles.remove(i);
 				}
-			}
+			}*/
 		}
 	}
 

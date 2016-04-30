@@ -49,18 +49,27 @@ public abstract class Decor implements Collidable {
 
 	@Override
 	public boolean collides(Collidable collidable) {
-		return false;
+		boolean collision;
+		Rectangle box = collidable.getHitbox();
+		if (this.hitBox.intersects(box)) {
+			collision = true;
+		} else {
+			collision = false;
+		}
+		return collision;
 	}
 
 	@Override
 	public void applyCollision(Collidable collidable, int edge) {
-		// TODO Auto-generated method stub
+		collidable.goBack(this.hitBox);
+	}
+
+	public void goBack(Rectangle hitbox) {
 
 	}
 
 	@Override
-	public int collidesWith(Collidable collidable) {
-		// TODO Auto-generated method stub
+	public int collidesWith(Rectangle box) {
 		return 0;
 	}
 

@@ -12,7 +12,9 @@ public interface Collidable {
 
 	void applyCollision(Collidable collidable, int edge);
 
-	int collidesWith(Collidable collidable);
+	int collidesWith(Rectangle box);
 
 	void getDamage(int damage);
+
+	void goBack(Rectangle hitBox);
 }
