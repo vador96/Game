@@ -66,7 +66,7 @@ public abstract class Decor implements Collidable {
 	public void goBack(Rectangle hitbox) {
 
 	}
-	
+
 	@Override
 	public int collidesWith(Rectangle hitbox) {
 		// TODO Auto-generated method stub
@@ -80,6 +80,11 @@ public abstract class Decor implements Collidable {
 
 	@Override
 	public void getDamageFromPlayer(int damage) {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void checkKey() {
 		// TODO Auto-generated method stub
 	}
 }

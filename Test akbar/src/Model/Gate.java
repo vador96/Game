@@ -1,15 +1,20 @@
 package Model;
 
-public class Gate extends Decor{
+public class Gate extends Decor {
 
 	private boolean open;
 	private String nameLevel;
 
 	public Gate(int x, int y, String nameLevel) {
 		super(x, y);
-		setHitBox(x*40+37, y*40, 3, 40);
+		setHitBox(x * 40 + 37, y * 40, 3, 40);
 		this.nameLevel = nameLevel;
 		this.open = true;
+	}
+
+	@Override
+	public void applyCollisionOn(Collidable collidable) {
+		collidable.checkKey();
 	}
 
 	public boolean isOpen() {

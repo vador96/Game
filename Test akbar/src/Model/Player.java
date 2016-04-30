@@ -2,12 +2,13 @@ package Model;
 
 import java.awt.*;
 
-public class Player extends Character{
+public class Player extends Character {
 
 	private boolean readyToAttack = true;
-	
+
 	public Player(int x, int y, int speed, int hp, Game game) {
-		super(x,y,speed,hp,game);
+		super(x, y, speed, hp, game);
+		this.key = true;
 	}
 
 	public void getDamage(int damage) {
@@ -40,37 +41,36 @@ public class Player extends Character{
 	@Override
 	public void goBack(Rectangle hitbox) {
 		int edge = collidesWith(hitbox);
-		
+
 		int xTarget = (int) hitbox.getX();
 		int yTarget = (int) hitbox.getY();
 		if (edge == 6) {
-			posX = xTarget - (sizeSquare );
+			posX = xTarget - (sizeSquare);
 		} else if (edge == 4) {
 			posX = xTarget + (sizeSquare);
 		} else if (edge == 2) {
-			posY = yTarget - (sizeSquare );
+			posY = yTarget - (sizeSquare);
 		} else if (edge == 8) {
-			posY = yTarget + (sizeSquare );
+			posY = yTarget + (sizeSquare);
 		}
 	}
 
 	@Override
 	public void applyCollisionOn(Collidable collidable) {
-		// TODO Auto-generated method stub
-		
+		// collidable.goBack(this.hitbox);
 	}
 
 	@Override
 	public void getDamageFromPlayer(int damage) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void getDamageFromMonster(int damage) {
 		getDamage(damage);
 	}
-	
+
 	@Override
 	public void notifyObserver(Observer observer) {
 		observer.update();

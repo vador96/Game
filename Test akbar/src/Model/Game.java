@@ -13,6 +13,7 @@ public class Game implements Observer, Subject {
 	private ArrayList<Player> players = new ArrayList<>();
 	private ArrayList<Monster> monsters = new ArrayList<>();
 	private ArrayList<Block> blocks = new ArrayList<>();
+	private ArrayList<Gate> gates = new ArrayList<>();
 	private ArrayList<Collidable> collidables = new ArrayList<>();
 	public ArrayList<Projectile> projectiles = new ArrayList<>();
 
@@ -20,7 +21,7 @@ public class Game implements Observer, Subject {
 		this.window = window;
 		this.setLevel(level);
 		this.map = level.mapMatrix;
-		players.add(new Player(1, 1,4, 1000, this)); // pos < dimension matrice
+		players.add(new Player(1, 1, 4, 1000, this));
 		this.generateCollidables();
 		this.notifyObserver(window);
 	}
@@ -52,11 +53,12 @@ public class Game implements Observer, Subject {
 					blocks.add(block);
 					collidables.add(block);
 				} else if (item == '2') {
-					Monster monster = new Monster(j, i,1, 100, this);
+					Monster monster = new Monster(j, i, 1, 100, this);
 					monsters.add(monster);
 					collidables.add(monster);
 				} else if (item == 'G') {
 					Gate gate = new Gate(j, i, "data/game1.txt");
+					gates.add(gate);
 					collidables.add(gate);
 				}
 			}
@@ -70,6 +72,7 @@ public class Game implements Observer, Subject {
 					blocks.get(i).applyCollisionOn(collidables.get(j));
 				}
 			}
+
 			for (int i = 0; i < monsters.size(); i++) {
 				if (collidables.get(j) != monsters.get(i) && monsters.get(i).collides(collidables.get(j))) {
 					monsters.get(i).applyCollisionOn(collidables.get(j));
@@ -82,14 +85,19 @@ public class Game implements Observer, Subject {
 				}
 			}
 
-			/*
-			 * for (int i = 0; i < projectiles.size(); i++) { if
-			 * (collidables.get(j) != projectiles.get(i) &&
-			 * projectiles.get(i).collides(collidables.get(j)) &&
-			 * collidables.get(j) != players.get(0)) {
-			 * projectiles.get(i).applyCollision(collidables.get(j), 0);
-			 * projectiles.remove(i); } }
-			 */
+			for (int i = 0; i < projectiles.size(); i++) {
+				if (collidables.get(j) != projectiles.get(i) && projectiles.get(i).collides(collidables.get(j))
+						&& collidables.get(j) != players.get(0)) {
+					projectiles.get(i).applyCollisionOn(collidables.get(j));
+					projectiles.remove(i);
+				}
+			}
+
+			for (int i = 0; i < gates.size(); i++) {
+				if (collidables.get(j) != gates.get(i) && gates.get(i).collides(collidables.get(j))) {
+					gates.get(i).applyCollisionOn(collidables.get(j));
+				}
+			}
 		}
 	}
 

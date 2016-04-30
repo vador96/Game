@@ -9,6 +9,8 @@ public interface Collidable {
 	Rectangle getHitbox();
 
 	void setHitbox(int x, int y);
+	
+	void checkKey();
 
 	boolean collides(Collidable collidable);
 

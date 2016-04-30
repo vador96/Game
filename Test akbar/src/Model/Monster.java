@@ -21,7 +21,7 @@ public class Monster extends Character {
 
 	public void setFieldOfView(int x, int y) {
 		this.fieldOfView.setBounds(x - vision, y - vision, 3 * vision, 3 * vision);
-	}	
+	}
 
 	public void update() {
 		lookForPlayer(game);
@@ -81,6 +81,7 @@ public class Monster extends Character {
 		if (random.nextInt(10) == 7) {
 			dir = random.nextInt(4);
 		}
+
 		if (dir == 2) {
 			move(1, 0);
 		} else if (dir == 0) {
@@ -114,18 +115,18 @@ public class Monster extends Character {
 	@Override
 	public void goBack(Rectangle hitbox) {
 		int edge = collidesWith(hitbox);
-		
+
 		int xTarget = (int) hitbox.getX();
 		int yTarget = (int) hitbox.getY();
 		System.out.println("collision");
 		if (edge == 6) {
-			posX = xTarget - (sizeSquare );
+			posX = xTarget - (sizeSquare);
 		} else if (edge == 4) {
 			posX = xTarget + (sizeSquare);
 		} else if (edge == 2) {
-			posY = yTarget - (sizeSquare );
+			posY = yTarget - (sizeSquare);
 		} else if (edge == 8) {
-			posY = yTarget + (sizeSquare );
+			posY = yTarget + (sizeSquare);
 		}
 	}
 
@@ -137,12 +138,11 @@ public class Monster extends Character {
 
 	@Override
 	public void getDamageFromMonster(int damage) {
-		
+
 	}
 
 	@Override
 	public void getDamageFromPlayer(int damage) {
-		// TODO Auto-generated method stub
-		
+		getDamage(damage);
 	}
 }
