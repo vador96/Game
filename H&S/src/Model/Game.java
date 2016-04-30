@@ -1,171 +1,157 @@
 package Model;
 
-import java.awt.Rectangle;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-
 import View.Window;
 
-public class Game implements Runnable {
-	private ArrayList<Player> players = new ArrayList<Player>();
-	private ArrayList<Block> blocks = new ArrayList<Block>();
-	private ArrayList<Monster> monsters = new ArrayList<Monster>();
-    private boolean playerAttacking = false;
-	private Thread thread;
-	private int[][] map;
-	private Window window;
-	private int size = 20;
+import java.util.ArrayList;
 
-	public Game(Window window) {
+public class Game implements Observer, Subject {
+
+	private Window window;
+	// private Thread thread;
+	private Level level;
+	private char[][] map;
+	private ArrayList<Player> players = new ArrayList<>();
+	private ArrayList<Monster> monsters = new ArrayList<>();
+	private ArrayList<Block> blocks = new ArrayList<>();
+	private ArrayList<Collidable> collidables = new ArrayList<>();
+	public ArrayList<Projectile> projectiles = new ArrayList<>();
+
+	public Game(Window window, Level level) {
 		this.window = window;
-		players.add(new Player(100, 100));
-		this.map = this.getMap();
-		window.draw(this.map, players.get(0).getPosX(), players.get(0).getPosY());
-		thread = new Thread(this);
-		thread.start();
+		this.setLevel(level);
+		this.map = level.mapMatrix;
+		players.add(new Player(1, 1, 1000, this)); // pos < dimension matrice
+		this.generateCollidables();
+		this.notifyObserver(window);
 	}
 
-	public void run() {
-		while (true) {
-			for (Monster monster : monsters) {
-				checkCollision(monster.getHitBox());
-			}
-            if (isPlayerAttacking()) {
-                for (int i = 0; i<monsters.size();i++) {
-                    checkAttack(monsters.get(i));
-                    System.out.println(monsters.get(i).getHealth());
-                    if (monsters.get(i).getHealth() <= 0) {
-                        int posX = monsters.get(i).getPosX();
-                        int posY = monsters.get(i).getPosY();
-                        map[posX][posY] = '1';
-                        monsters.remove(i);
-                        System.out.println("dead monster");
-                    }
-                }
-            }
-			players.get(0).update();
-            if (players.get(0).getHealth() <= 0) {
-                System.out.println("dead");
-                //players.remove(0);
-                break;
-            }
-			window.draw(this.map, players.get(0).getPosX(), players.get(0).getPosY());
-			try {
-				Thread.sleep(17);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+
+	@Override
+	public synchronized void update() {
+		checkCollision();
+		sendToGraveyard();
+		notifyObserver(window);
+	}
+
+	@Override
+	public void notifyObserver(Observer observer) {
+		observer.update();
+		window.draw(map, players, monsters, blocks, projectiles);
+	}
+
+	public void generateCollidables() {
+		collidables.add(players.get(0));
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[0].length; j++) {
+				char item = map[i][j];
+				if (item == '1') {
+					Block block = new Block(j, i);
+					blocks.add(block);
+					collidables.add(block);
+				} else if (item == '2') {
+					Monster monster = new Monster(j, i, 100, this);
+					monsters.add(monster);
+					collidables.add(monster);
+				} else if (item == 'G') {
+					Gate gate = new Gate(j, i, "data/game1.txt");
+					collidables.add(gate);
+				}
 			}
 		}
 	}
 
-	public void movePlayerLeft() {
-		players.get(0).move(-1, 0);
+	public void checkCollision() {
+		for (int j = 0; j < collidables.size(); j++) {
+			for (int i = 0; i < collidables.size(); i++) {
+				if (collidables.get(j) != collidables.get(i) && collidables.get(i).collides(collidables.get(j))) {
+					collidables.get(i).applyCollision(collidables.get(j), 1);
+				}
+			}
+			for (int i = 0; i < projectiles.size(); i++) {
+				if (collidables.get(j) != projectiles.get(i) && projectiles.get(i).collides(collidables.get(j))
+						&& collidables.get(j) != players.get(0)) {
+					projectiles.get(i).applyCollision(collidables.get(j), 10);
+					projectiles.remove(i);
+				}
+			}
+		}
+	}
+
+	public void sendToGraveyard() {
+		for (int j = 0; j < collidables.size(); j++) {
+			for (int i = 0; i < monsters.size(); i++) {
+				if (collidables.get(j) == monsters.get(i) && monsters.get(i).dead) {
+					collidables.remove(j);
+					monsters.remove(i);
+				}
+			}
+		}
 	}
 
 	public void movePlayerRight() {
 		players.get(0).move(1, 0);
 	}
 
-	public void movePlayerDown() {
-		players.get(0).move(0, 1);
+	public void movePlayerLeft() {
+		players.get(0).move(-1, 0);
 	}
 
 	public void movePlayerUp() {
 		players.get(0).move(0, -1);
 	}
 
-	public void movePlayerStop() {
-		players.get(0).move(0, 0);
+	public void movePlayerDown() {
+		players.get(0).move(0, 1);
 	}
 
-	public int[][] getMap() {
-		int[][] map = new int[this.size][this.size];
-		for (int i = 0; i < this.size; i++)
-			for (int j = 0; j < this.size; j++)
-				map[i][j] = 0;
-
-		try {
-			loadMap("data/map1.txt");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		for (Block block : blocks) {
-			int x = block.getPosX();
-			int y = block.getPosY();
-			map[x][y] = 1;
-		}
-
-		for (Monster monster : monsters) {
-			int x = monster.getPosX();
-			int y = monster.getPosY();
-			map[x][y] = 3;
-		}
-
-		return map;
+	public void stopRight() {
+		players.get(0).setMovingRight(false);
+		players.get(0).stop();
 	}
 
-	private void loadMap(String filename) throws IOException {
-		ArrayList<String> lines = new ArrayList<String>();
-		int width = 0;
-		int height = 0;
-
-		BufferedReader reader = new BufferedReader(new FileReader(filename));
-		while (true) {
-			String line = reader.readLine();
-			if (line == null) {
-				reader.close();
-				break;
-			}
-
-			if (!line.startsWith("!")) {
-				lines.add(line);
-				width = Math.max(width, line.length());
-			}
-		}
-
-		height = lines.size();
-
-		for (int j = 0; j < height; j++) {
-			String line = (String) lines.get(j);
-			for (int i = 0; i < width; i++) {
-				if (i < line.length()) {
-					char ch = line.charAt(i);
-					if (ch == '1') {
-						Block t = new Block(i, j);
-						blocks.add(t);
-					} else if (ch == '3') {
-						Monster m = new Monster(i, j);
-						monsters.add(m);
-					}
-				}
-			}
-		}
+	public void stopLeft() {
+		players.get(0).setMovingLeft(false);
+		players.get(0).stop();
 	}
 
-	public void checkCollision(Rectangle r) {
-		if (players.get(0).getHitBox().intersects(r)) {
-			players.get(0).move(-1, 0);
-			players.get(0).isCollision = true;
-		}
+	public void stopUp() {
+		players.get(0).setMovingUp(false);
+		players.get(0).stop();
 	}
 
-    public void checkAttack(Monster monster) {
-        Rectangle r = monster.getHitBox();
-        if (players.get(0).attackBox.intersects(r)) {
-            monster.damage(10);
-            System.out.println(monster.getHealth());
-        }
-    }
+	public void stopDown() {
+		players.get(0).setMovingDown(false);
+		players.get(0).stop();
+	}
 
-    public boolean isPlayerAttacking() {
-        return this.playerAttacking;
-    }
+	public void playerAttack() {
+		players.get(0).attack();
+	}
 
-    public void setPlayerAttacking(boolean attacking) {
-        this.playerAttacking = attacking;
-    }
+	public Level getLevel() {
+		return level;
+	}
 
+	public void setLevel(Level level) {
+		this.level = level;
+	}
+
+	public void addProjectile(int x, int y, int dir, int speed, int damage) {
+		this.projectiles.add(new Projectile(x, y, dir, speed, damage));
+	}
+
+	public synchronized void loadLevel(String nameLevel) {
+		monsters.removeAll(monsters);
+		collidables.removeAll(collidables);
+		blocks.removeAll(blocks);
+		projectiles.removeAll(projectiles);
+
+		this.level = new Level(nameLevel);
+		this.map = level.mapMatrix;
+		this.generateCollidables();
+		this.notifyObserver(window);
+	}
 }
