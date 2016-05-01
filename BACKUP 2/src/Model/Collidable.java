@@ -3,16 +3,24 @@ package Model;
 import java.awt.*;
 
 public interface Collidable {
-
+	
+	public final int sizeSquare = 40;
+	
 	Rectangle getHitbox();
 
-	void setHitBox(int x, int y);
+	void setHitbox(int x, int y);
+	
+	void checkKey();
 
 	boolean collides(Collidable collidable);
 
-	void applyCollision(Collidable collidable, int edge);
+	void applyCollisionOn(Collidable collidable);
 
-	int collidesWith(Collidable collidable);
+	int collidesWith(Rectangle box);
 
-	void getDamage(int damage);
+	void getDamageFromMonster(int damage);
+	
+	void getDamageFromPlayer(int damage);
+
+	void goBack(Rectangle hitBox);
 }

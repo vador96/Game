@@ -9,17 +9,41 @@ public class Projectile implements Damage, Collidable, Runnable {
 	private int direction;
 	public boolean visible = true;
 	private Rectangle hitBox;
-    private Thread thread;
+	private Thread thread;
 
 	public Projectile(int posX, int posY, int direction, int speed, int damage) {
-		this.hitBox = new Rectangle(posX, posY, 10, 10);
+		generateHitbox(posX, posY, direction);
 		this.speed = speed;
 		this.damage = damage;
 		this.direction = direction;
-        this.thread = new Thread(this);
-        this.thread.start();
+		this.thread = new Thread(this);
+		this.thread.start();
 	}
-	
+
+	public void generateHitbox(int posX, int posY, int direction) {
+		int x = 0;
+		int y = 0;
+		switch (direction) {
+		case 0:
+			x = posX - 10;
+			y = posY + 20;
+			break;
+		case 1:
+			x = posX + 10;
+			y = posY - 10;
+			break;
+		case 2:
+			x = posX + 40;
+			y = posY + 20;
+			break;
+		case 3:
+			x = posX + 10;
+			y = posY + 40;
+			break;
+		}
+		this.hitBox = new Rectangle(x, y, 10, 10);
+	}
+
 	public int getDirection() {
 		return direction;
 	}
@@ -30,7 +54,7 @@ public class Projectile implements Damage, Collidable, Runnable {
 
 	@Override
 	public void doDamage(int damage, Collidable collidable) {
-		collidable.getDamage(damage);
+		collidable.getDamageFromPlayer(damage);
 	}
 
 	@Override
@@ -44,7 +68,7 @@ public class Projectile implements Damage, Collidable, Runnable {
 	}
 
 	@Override
-	public void setHitBox(int x, int y) {
+	public void setHitbox(int x, int y) {
 		if (visible) {
 			hitBox.translate(x, y);
 		} else {
@@ -65,43 +89,61 @@ public class Projectile implements Damage, Collidable, Runnable {
 	}
 
 	@Override
-	public void applyCollision(Collidable collidable, int edge) {
+	public void applyCollisionOn(Collidable collidable) {
 		if (visible) {
-			doDamage(damage, collidable);
+			doDamage(this.damage, collidable);
+			this.explode();
 		}
-	}
-
-	@Override
-	public int collidesWith(Collidable collidable) {
-		return 0;
-	}
-
-	@Override
-	public void getDamage(int damage) {
-		this.explode();
 	}
 
 	public void update() {
 		if (direction == 0) {
-			this.setHitBox(-speed, 0);
+			this.setHitbox(-speed, 0);
 		} else if (direction == 1) {
-			this.setHitBox(0, -speed);
+			this.setHitbox(0, -speed);
 		} else if (direction == 2) {
-			this.setHitBox(speed, 0);
+			this.setHitbox(speed, 0);
 		} else if (direction == 3) {
-			this.setHitBox(0, speed);
+			this.setHitbox(0, speed);
 		}
 	}
 
 	@Override
 	public void run() {
 		while (visible) {
-            try {
-                update();
-                Thread.sleep(30);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+			try {
+				update();
+				Thread.sleep(30);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void getDamageFromMonster(int damage) {
+
+	}
+
+	@Override
+	public void getDamageFromPlayer(int damage) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public int collidesWith(Rectangle box) {
+		return 0;
+	}
+
+	@Override
+	public void goBack(Rectangle hitBox) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void checkKey() {
+		// TODO Auto-generated method stub
 	}
 }

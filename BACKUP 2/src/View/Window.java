@@ -11,11 +11,14 @@ public class Window extends JFrame implements Observer {
 	
 	private static final long serialVersionUID = 1L;
 	
+	public static final double WINDOW_WIDTH = 1000.0;
+	public static final double WINDOW_HEIGHT = 1000.0;
+	
 	private Map map = new Map();
 
     public Window() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1016,1039);
+        this.setSize((int)WINDOW_WIDTH,(int)WINDOW_HEIGHT);
         this.setLocationRelativeTo(null);
         this.getContentPane().add(this.map);
         this.setVisible(true);

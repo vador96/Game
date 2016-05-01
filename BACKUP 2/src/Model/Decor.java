@@ -6,13 +6,12 @@ public abstract class Decor implements Collidable {
 
 	private int posX;
 	private int posY;
-	private Rectangle hitBox;
-	private final int sizeSquarre = 40;
+	private Rectangle hitbox;
 
 	public Decor(int x, int y) {
 		this.setPosX(x);
 		this.setPosY(y);
-		this.hitBox = new Rectangle(this.posX, this.posY, sizeSquarre, sizeSquarre);
+		this.hitbox = new Rectangle(this.posX, this.posY, sizeSquare, sizeSquare);
 	}
 
 	public int getPosX() {
@@ -20,7 +19,7 @@ public abstract class Decor implements Collidable {
 	}
 
 	public void setPosX(int posX) {
-		this.posX = posX * sizeSquarre; // *50 : en reference a la taille de la
+		this.posX = posX * sizeSquare; // *50 : en reference a la taille de la
 										// map
 	}
 
@@ -29,43 +28,63 @@ public abstract class Decor implements Collidable {
 	}
 
 	public void setPosY(int posY) {
-		this.posY = posY * sizeSquarre; // *50 : en reference a la taille de la
+		this.posY = posY * sizeSquare; // *50 : en reference a la taille de la
 										// map
 	}
 
 	@Override
 	public Rectangle getHitbox() {
-		return hitBox;
+		return hitbox;
 	}
 
 	@Override
-	public void setHitBox(int x, int y) {
-		this.hitBox.setBounds(x, y, sizeSquarre, sizeSquarre);
+	public void setHitbox(int x, int y) {
+		this.hitbox.setBounds(x, y, sizeSquare, sizeSquare);
 	}
 
 	public void setHitBox(int x, int y, int width, int heigth) {
-		this.hitBox.setBounds(x, y, width, heigth);
+		this.hitbox.setBounds(x, y, width, heigth);
 	}
 
 	@Override
 	public boolean collides(Collidable collidable) {
-		return false;
+		boolean collision;
+		Rectangle box = collidable.getHitbox();
+		if (this.hitbox.intersects(box)) {
+			collision = true;
+		} else {
+			collision = false;
+		}
+		return collision;
 	}
 
 	@Override
-	public void applyCollision(Collidable collidable, int edge) {
-		// TODO Auto-generated method stub
+	public void applyCollisionOn(Collidable collidable) {
+		collidable.goBack(this.hitbox);
+	}
+
+	public void goBack(Rectangle hitbox) {
 
 	}
 
 	@Override
-	public int collidesWith(Collidable collidable) {
+	public int collidesWith(Rectangle hitbox) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public void getDamage(int damage) {
+	public void getDamageFromMonster(int damage) {
+		// TODO Auto-generated method stub
+	}
 
+	@Override
+	public void getDamageFromPlayer(int damage) {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void checkKey() {
+		// TODO Auto-generated method stub
 	}
 }
