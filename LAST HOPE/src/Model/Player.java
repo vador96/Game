@@ -90,7 +90,7 @@ public class Player extends Character {
 				if (this.isInvincible() == true) {
 					tick += 1;
 				}
-				if (tick >= 600 && this.isInvincible() == true) {
+				if (tick >= 3 && this.isInvincible() == true) {
 					this.becomeNormal();
 				}
 				Thread.sleep(17);
@@ -137,8 +137,7 @@ public class Player extends Character {
 
 	@Override
 	public void applyCollisionOn(Gate gate) {
-		this.setInvincible(true);
-		System.out.println("hello");
+		this.becomeInvincible();
 		gate.setOpen(true);
 		if (gate.type == 'W') {
 			this.setPosX((int) (Window.WINDOW_WIDTH - 2 * this.getHitbox().getWidth()));
@@ -149,9 +148,7 @@ public class Player extends Character {
 		} else if (gate.type == 'S') {
 			this.setPosY((int) (this.getHitbox().getWidth() / 4.0));
 		}
-		game.changeLevelTo(gate.type); // raccourci, vaut mieux checker d abord
-		// si y a une clef
-		this.setInvincible(false);
+		game.changeLevelTo(gate.type);
 	}
 
 	public boolean isInvincible() {

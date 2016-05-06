@@ -273,7 +273,6 @@ public abstract class Character implements Collidable, Collision, Subject, Runna
 	}
 
     public void goBack(Collidable collidable) {
-    	System.out.println("porte");
         int edge = collidesOnSide(collidable);
         Rectangle box = collidable.getHitbox();
         int xTarget = (int) box.getX();
