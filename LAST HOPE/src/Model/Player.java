@@ -6,18 +6,23 @@ public class Player extends Character {
 
 	private boolean readyToAttack = true;
 	private boolean invincible = false;
+	private boolean changingMap = false;
 	private int maxMana;
 	private int mana;
-	private int tick;
+	private int tick1;
+	private int tick2;
+	private int limitTick;
+	private final int TICK_CHANGE_MAP = 3;
 	private int attackStat = 10;
-	private int attack =10;
+	private int attack = 10;
 
 	public Player(int x, int y, int speed, int hp, int mana, Game game) {
 		super(x, y, speed, hp, game);
 		this.maxMana = mana;
 		this.mana = maxMana;
 
-		this.tick = 0;
+		this.tick1 = 0;
+		this.tick2 = 0;
 	}
 
 	public int getMana() {
@@ -88,10 +93,16 @@ public class Player extends Character {
 			try {
 				update();
 				if (this.isInvincible() == true) {
-					tick += 1;
+					tick1 += 1;
 				}
-				if (tick >= 3 && this.isInvincible() == true) {
+				if (tick1 >= limitTick && this.isInvincible() == true) {
 					this.becomeNormal();
+				}
+				if (this.isChangingMap() == true) {
+					tick2 += 1;
+				}
+				if (tick2 >= TICK_CHANGE_MAP && this.isChangingMap() == true) {
+					this.setChangingMap(false);
 				}
 				Thread.sleep(17);
 			} catch (InterruptedException e) {
@@ -120,24 +131,30 @@ public class Player extends Character {
 		this.setHealth(this.getHealth() + potion.getBonusHealth());
 		this.setMana(this.getMana() + potion.getBonusMana());
 		if (potion.isBonusInvincible() == true) {
-			becomeInvincible();
+			becomeInvincible(600);
 		}
 	}
 
-	void becomeInvincible() {
+	void becomeInvincible(int tickNumber) {
 		this.setInvincible(true);
-		this.setAttack(2*attackStat);
-		this.tick = 0;
+		this.setAttack(2 * attackStat);
+		this.tick1 = 0;
+		this.limitTick = tickNumber;
 	}
-	
-	void becomeNormal(){
+
+	void becomeNormal() {
 		setInvincible(false);
 		this.setAttack(attackStat);
+	}
+	
+	void changeMap(){
+		this.setChangingMap(true);
+		this.tick2 = 0;
 	}
 
 	@Override
 	public void applyCollisionOn(Gate gate) {
-		this.becomeInvincible();
+		this.changeMap();
 		gate.setOpen(true);
 		if (gate.type == 'W') {
 			this.setPosX((int) (Window.WINDOW_WIDTH - 2 * this.getHitbox().getWidth()));
@@ -157,6 +174,14 @@ public class Player extends Character {
 
 	public void setInvincible(boolean invicible) {
 		this.invincible = invicible;
+	}
+
+	public boolean isChangingMap() {
+		return changingMap;
+	}
+
+	public void setChangingMap(boolean changingMap) {
+		this.changingMap = changingMap;
 	}
 
 	public int getAttack() {

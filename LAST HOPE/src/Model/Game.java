@@ -103,7 +103,7 @@ public class Game implements Observer, Subject {
 		for (int j = 0; j < collidables.size(); j++) {
 
 			if (collidables.get(j) != players.get(0) && players.get(0).collides(collidables.get(j))
-					&& players.get(0).isInvincible() == false) {
+					&& players.get(0).isChangingMap() == false) {
 				collidables.get(j).acceptCollision(players.get(0));
 			}
 
