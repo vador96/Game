@@ -21,6 +21,7 @@ public class Projectile implements Collidable, Collision, Runnable {
 	}
 	
 	private void generateHitbox(int posX, int posY, int direction) {
+		//generate the hitbox of the projectile
 		int x = 0;
 		int y = 0;
 		switch (direction) {
@@ -67,11 +68,13 @@ public class Projectile implements Collidable, Collision, Runnable {
 	}
 
 	private void explode() {
+		// set the attribute visible to false to remove the projectile of the game
 		this.visible = false;
 	}
 
     @Override
     public boolean collides(Collidable collidable) {
+    	// return true if the projectile collide with something
         boolean isCollision;
         Rectangle box = collidable.getHitbox();
         if (this.hitbox.intersects(box)) {
@@ -83,17 +86,19 @@ public class Projectile implements Collidable, Collision, Runnable {
     }
 	@Override
 	public void acceptCollision(Collision collision) {
+	// accepte the collision and send a message to the object that has collide with to apply
+	// the method when the object collides a projectile
         collision.applyCollisionOn(this);
 	}
 
 	@Override
 	public void applyCollisionOn(Potion potion) {
-		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
 	public void applyCollisionOn(Monster monster) {
+	// send a message to the monster that the projectile had collided with and tell to the monster to lose HP 
         monster.getDamage(damage);
         this.explode();
 	}
@@ -118,6 +123,7 @@ public class Projectile implements Collidable, Collision, Runnable {
 	}
 
 	private void update() {
+		// move the projectile
 		if (direction == 0) {
 			this.setHitbox(-speed, 0);
 		} else if (direction == 1) {
