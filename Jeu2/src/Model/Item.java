@@ -68,7 +68,7 @@ public abstract class Item implements Collidable {
 		} else if (this.bonusInvincible) {
 			this.type = "invincible";
 		} else {
-			this.type = "noType"; //Pour quelque chose d'autres, armes?
+			this.type = "noType";  // for weapon or armor, implements later according to the possibilities
 		}
 	}
 
@@ -98,6 +98,6 @@ public abstract class Item implements Collidable {
 
 	@Override
 	public void setHitbox(int x, int y) {
-		// TODO Auto-generated method stub
+	
 	}
 }
