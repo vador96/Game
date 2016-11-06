@@ -6,7 +6,7 @@ public abstract class Character {
     String name;
     private int health;
     private int maxHealth;
-    private int mana;
+    private int mana;dnjkfvndkv
     private int maxMana;
     private int posX;
     private int posY;
