@@ -1,6 +1,5 @@
 package Model;
 
-
 public abstract class Character {
 
     String name;
@@ -11,7 +10,7 @@ public abstract class Character {
     private int posX;
     private int posY;
     private int direction;
-    protected boolean invincible;
+    private boolean invincible;
 
     public int getHealth() {
         return this.health;
@@ -53,6 +52,25 @@ public abstract class Character {
         // condition ?
     }
 
+    public String getDirection(){
+        String direction = new String();
+        int dir = this.direction;
+        if(dir == 1){
+            direction = "Left";
+        }else if(dir == 2){
+            direction = "Up";
+        }else if(dir == 3){
+            direction = "Right";
+        }else if(dir == 4){
+            direction = "Down";
+        }
+        return direction;
+    }
+
+    public void setDirection(int direction){
+        this.direction = direction;
+    }
+
     public void getDamage(int damage) {
         if (!this.invincible) {
             int health = this.health;
@@ -61,10 +79,18 @@ public abstract class Character {
         }
     }
 
+    public void move(int X, int Y){
+        this.posX = this.posX + X;
+        this.posY = this.posY + Y;
 
-    public void move(int dx, int dy) {
-        this.posX = this.posX + dx;
-        this.posY = this.posY + dy;
+        if(X > 0){
+            this.direction = 3;
+        }else if (X < 0) {
+            this.direction = 1;
+        }else if (Y > 0) {
+            this.direction = 4;
+        }else if (Y < 0){
+            this.direction = 2;
+        }
     }
 }
-
